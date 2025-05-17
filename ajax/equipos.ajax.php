@@ -12,6 +12,7 @@ class AjaxEquipos {
     public $idEquipo; // Esta propiedad recibe el id del equipo enviado desde el JS
     public $idEquipoTraspaso;
     public $buscarDocumentoId;
+    public $idEquipoTraspasoUbicacion;
 
     /* ==================================================
     MÉTODO PARA EDITAR EQUIPO
@@ -24,9 +25,10 @@ class AjaxEquipos {
 
         // Llamamos al controlador para obtener los datos del equipo específico
         $respuesta = ControladorEquipos::ctrMostrarEquipos($item, $valor);
-
+        
         // Devolvemos los datos en formato JSON para que el JS los pueda usar
         echo json_encode($respuesta);
+        //error_log(print_r($respuesta, true));
     }
 
     public function ajaxMostrarDatosCuentadanteOrigen(){
@@ -43,12 +45,26 @@ class AjaxEquipos {
         echo json_encode($respuesta);
     }
 
+    public function ajaxMostrarDatosUbicacion(){
+        $item = "equipo_id";
+        $valor = $this -> idEquipoTraspasoUbicacion;
+        $respuesta = ControladorEquipos::ctrMostrarUbicacion($item, $valor);
+        echo json_encode($respuesta);
+    }
+
 }
 
 
 /* ==================================================
 EJECUCIÓN DEL CÓDIGO CUANDO SE ENVÍA EL FORMULARIO
 ================================================== */
+
+if (isset($_POST["idEquipoTraspasoUbicacion"])) {
+    $traspaso = new AjaxEquipos();
+    $traspaso -> idEquipoTraspasoUbicacion = $_POST["idEquipoTraspasoUbicacion"];
+    $traspaso -> ajaxMostrarDatosUbicacion();
+}
+
 
 if(isset($_POST["buscarDocumentoId"])){
     $datosCuentadante = new AjaxEquipos();

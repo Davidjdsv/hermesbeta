@@ -7,51 +7,70 @@ class ControladorEquipos{
         $tabla = "equipos";
         $respuesta = ModeloEquipos::mdlMostrarEquipos($tabla, $item, $valor);
         //var_dump($respuesta[0]);
+        error_log(print_r($respuesta, true));
         return $respuesta;
     }
 
-    static public function ctrAgregarEquipos()
-    {
-        if (
-            isset($_POST["numero_serie"]) &&
-            isset($_POST["etiqueta"]) &&
-            isset($_POST["descripcion"]) &&
-            isset($_POST["fecha_entrada"]) &&
-            isset($_POST["ubicacion_id"]) &&
-            isset($_POST["categoria_id"]) &&
-            isset($_POST["cuentadante_id"]) &&
-            isset($_POST["a_cuentadante"]) &&
-            isset($_POST["id_estado"])
-
-        ) {
-
-            if (
-                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["numero_serie"]) &&
-                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["etiqueta"]) &&
-                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,() ]+$/', $_POST["descripcion"])
-            ) {
+    public static function ctrAgregarEquipos(){
+        if (isset($_POST["numero_serie"]) && isset($_POST["etiqueta"]) && isset($_POST["descripcion"]) && isset($_POST["ubicacion_id"]) && isset($_POST["categoria_id"]) && isset($_POST["cuentadante_id"])) {
+            // Faltaban los preg match
+            if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["numero_serie"]) && preg_match('/^[a-zA-Z0-9]+$/', $_POST["etiqueta"]) && preg_match('/^[a-zA-ZñÑáéíóÁÉÍÓÚ ]+$/', $_POST["descripcion"])) {
+                // Mostrar datos antes de enviarlos al modelo
                 $tabla = "equipos";
-
                 $datos = array(
-                    "numeroSerie" => $_POST["numeroSerie"],
+                    "numero_serie" => $_POST["numero_serie"],
                     "etiqueta" => $_POST["etiqueta"],
-                    "descripcion" => $_POST["descripcion"]
+                    "descripcion" => $_POST["descripcion"],
+                    "ubicacion_id" => $_POST["ubicacion_id"],
+                    "categoria_id" => $_POST["categoria_id"],
+                    "cuentadante_id" => $_POST["cuentadante_id"],
+                    "id_estado" => $_POST["id_estado"]
                 );
 
-                // $respuesta = ModeloEquipos::mdlAgregarEquipos($tabla, $datos);
-                // if ($respuesta == "ok") {
-                //     echo '<script>alert("Equipo agregado correctamente");</script>';
-                // } else {
-                //     echo '<script>alert("Error al agregar equipo");</script>';
-                // }
+                $respuesta = ModeloEquipos::mdlAgregarEquipos($tabla, $datos);
+                //var_dump($respuesta);
+
+                if ($respuesta == "ok") {
+                    echo '<script>Swal.fire({
+                    icon: "success",
+                    title: "¡Equipo agregado correctamente!",
+                    confirmButtonText: "Cerrar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location = "inventario";
+                    }
+                });</script>';
+                } else {
+                    echo '<script>Swal.fire({
+                    icon: "error",
+                    title: "¡Error al agregar el equipo!",
+                    confirmButtonText: "Cerrar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location = "inventario";
+                    }
+                });</script>';
+                }
+            } else {
+                echo '<script>
+                Swal.fire({
+                    icon: "error",
+                    title: "¡Error, carácteres ingresados no válidos!",
+                    confirmButtonText: "Cerrar"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location = "inventario";
+                    }
+                });
+                </script>';
             }
         }
     }
+    // End of ctrAgregarEquipos method
 
     public static function ctrEditarEquipos(){
-        if (isset($_POST["numeroSerieEdit"]) && isset($_POST["etiquetaEdit"]) && isset($_POST["descripcionEdit"]) && isset($_POST["categoriaEditId"]) && isset($_POST["estadoEdit"])) {
-            if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["numeroSerieEdit"]) &&
-            preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["etiquetaEdit"]) &&
+        if (isset($_POST["idEditEquipo"]) && isset($_POST["etiquetaEdit"]) && isset($_POST["descripcionEdit"]) && isset($_POST["categoriaEditId"]) && isset($_POST["estadoEdit"])) {
+            if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["etiquetaEdit"]) &&
             preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["descripcionEdit"])){
                 $tabla = "equipos";
                 $datos = array(
@@ -63,6 +82,7 @@ class ControladorEquipos{
                     "categoriaEdit" => $_POST["categoriaEditId"]
                 );
                 $respuesta = ModeloEquipos::mdlEditarEquipos($tabla, $datos);
+                
                 if ($respuesta == "ok") {
                     echo '<script>
                         Swal.fire({
@@ -90,20 +110,7 @@ class ControladorEquipos{
                         });
                     </script>';
                 }
-            } else {
-                echo '<script>
-                    Swal.fire({
-                        icon: "error",
-                        title: "¡Revisar parametros!",
-                        showConfirmButton: true,
-                        confirmButtonText: "Cerrar"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location = "inventario";
-                        }
-                    });
-                </script>';
-            }
+            } 
             
         }
     }
@@ -116,14 +123,61 @@ class ControladorEquipos{
         return $respuesta;
     }
 
-    static public function ctrMostrarDatosCuentadanteTraspaso($item, $valor){
+    static public function ctrMostrarDatosCuentadanteTraspaso($item, $valor)
+    {
         $tabla = "usuarios";
         $respuesta = ModeloEquipos::mdlMostrarDatosCuentadanteTraspaso($tabla, $item, $valor);
         return $respuesta;
     }
 
-    static public function ctrRealizarTraspasoCuentadante(){
-        if(isset($_POST["idTraspasoEquipo"]) && isset($_POST["cuentadanteDestinoId"])){
+    public static function ctrMostrarUbicacion($item, $valor){
+        $tabla = "equipos";
+        $respuesta = ModeloEquipos::mdlMostrarUbicacion($tabla, $item, $valor);
+        return $respuesta;
+    }
+
+    public static function ctrRealizarTraspasoUbicacion(){
+        if(isset($_POST["nuevaUbicacion"])){
+            $tabla = "equipos";
+            $datos = array(
+                "equipo_id" => $_POST["idTraspasoUbicacion"],
+                "nuevaUbicacion" => $_POST["nuevaUbicacion"]
+            );
+
+            $respuesta = ModeloEquipos::mdlRealizarTraspasoUbicacion($tabla, $datos);
+            if($respuesta == "ok"){
+                echo '<script>
+                        swal.fire({
+                            icon: "success",
+                            title: "¡Traspaso de ubicación realizado con éxito!",
+                            showConfirmButton: true,
+                            confirmButtonText: "Cerrar"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = "inventario";
+                            }
+                        });
+                    </script>';
+            } else {
+                echo '<script>
+                        swal.fire({
+                            icon: "error",
+                            title: "¡Traspaso de ubicación fallido!",
+                            showConfirmButton: true,
+                            confirmButtonText: "Cerrar"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = "inventario";
+                            }
+                        });
+                    </script>';
+            }
+        }
+    }
+
+    static public function ctrRealizarTraspasoCuentadante()
+    {
+        if (isset($_POST["idTraspasoEquipo"]) && isset($_POST["cuentadanteDestinoId"])) {
             $tabla = "equipos";
             $datos = array(
                 "equipo_id" => $_POST["idTraspasoEquipo"],
@@ -133,7 +187,7 @@ class ControladorEquipos{
             $respuesta = ModeloEquipos::mdlRealizarTraspasoCuentadante($tabla, $datos);
 
 
-            if($respuesta == "ok"){
+            if ($respuesta == "ok") {
                 echo '<script>
                         swal.fire({
                             icon: "success",
@@ -162,5 +216,4 @@ class ControladorEquipos{
             }
         }
     }
-
 } //fin de la clase ControladorEquipos    
