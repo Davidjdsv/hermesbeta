@@ -2,6 +2,7 @@
 BOTÓN PARA EDITAR EQUIPOS
 ================================================== */
 var idEquipoTraspaso;
+var idEquipoTraspasoUbicacion;
 
 // Escuchamos el evento "click" sobre cualquier botón con clase "btnEditarEquipo"
 $(document).on("click", ".btnEditarEquipo", function() {
@@ -159,15 +160,19 @@ $(document).on("click", ".btnBuscarCuentadante", function (event){
                     console.log("ESTE ES EL EQUIPO ID AL CUAL VOY A PASAR: ", idEquipoTraspaso);
                     $("#cuentadanteDestinoId").val(resultado["id_usuario"]);
                     $("#cuentadanteDestino").val(resultado["id_usuario"] + " " + resultado["cuentadante_nombre"]);
-                    $("#ubicacionTraspaso").val(resultado["ubicacion_id"] + " " + resultado["ubicacion_nombre"]);
+                    // $("#ubicacionTraspaso").val(resultado["ubicacion_id"] + " " + resultado["ubicacion_nombre"]);
                 }
             }
         });
     }
 });
 
+/* ==================================================
+BOTÓN PARA MOSTRAR LOS DATOS DE LA UBICACIÓN ACTUAL
+================================================== */
+
 $(document).on("click", ".btnTraspasarUbicacion", function() {
-    let idEquipoTraspasoUbicacion = $(this).attr("idEquipoTraspasoUbicacion");
+    idEquipoTraspasoUbicacion = $(this).attr("idEquipoTraspasoUbicacion"); //Id del equipo
     console.log(idEquipoTraspasoUbicacion);
 
     let datos = new FormData();
@@ -183,7 +188,37 @@ $(document).on("click", ".btnTraspasarUbicacion", function() {
             dataType: "json",
             success: function(resultado){
                 console.log(resultado);
+                // console.log("ubicacion_id hola: ", resultado["ubicacion_id"]);
+                $("#ubicacionActualId").val(resultado["ubicacion_id"]); // el id hidden
                 $("#ubicacionActual").val(resultado["ubicacion_id"] + " " + resultado["nombre_ubicacion"]);
+                // $("#nuevaUbicacionId").val();
             }
     });
+});
+
+/* ==================================================
+BOTÓN PARA AGREGAR AL INPUT DE LA NUEVA UBICACIÓN DEL EQUIPO
+================================================== */
+
+$(document).on("change", "#nuevaUbicacionId", function() {
+    var nuevaUbicacionId = $(this).val();
+    console.log("id ubicacion destino: ", nuevaUbicacionId);
+
+    var datos = new FormData();
+    datos.append("nuevaUbicacionId", nuevaUbicacionId);
+
+    $.ajax({
+        url: "ajax/equipos.ajax.php",
+            method: "POST",
+            data: datos,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function(resultado){
+                console.log("RESULTADO: ", resultado);
+                $("#idTraspasoUbicacion").val(resultado["equipo_id"]);
+                $("#nuevaUbicacionId").val(resultado["ubicacion_id"]);
+            }
+    })
 });

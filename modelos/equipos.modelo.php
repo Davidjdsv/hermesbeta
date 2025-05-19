@@ -166,6 +166,28 @@ class ModeloEquipos{
         }
     }
 
+    public static function mdlMostrarUbicacionDestino($tabla, $item, $valor){
+        try{
+            $stmt = Conexion::conectar()->prepare("SELECT e.ubicacion_id, 
+                                                    ub.nombre AS nombre_ubicacion
+                                                    FROM $tabla e
+                                                    JOIN ubicaciones ub ON e.ubicacion_id = ub.ubicacion_id
+                                                    WHERE e.$item = :$item LIMIT 1");
+            if($item == "nombre_ubicacion"){
+                $stmt -> bindParam(":" . $item, $valor, PDO::PARAM_STR);
+            } else {
+                $stmt -> bindParam(":" . $item, $valor, PDO::PARAM_INT);
+            }
+            $stmt -> execute();
+            return $stmt -> fetch();
+        } catch (Exception $e){
+            error_log("Error al cambiar de cuentadante: " . $e->getMessage());
+        } finally {
+            $stmt = null;
+        }
+        
+    }
+
     static public function mdlRealizarTraspasoUbicacion($tabla, $datos){
         try{
             $stmt = Conexion::conectar()->prepare("UPDATE $tabla 

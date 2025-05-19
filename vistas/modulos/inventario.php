@@ -325,24 +325,13 @@
             <div class="form-row ">
 
               <!-- INPUT CUENTADANTE ORIGEN -->
-              <div class="form-group col-lg-6">
+              <div class="form-group col-lg-12">
                 <label for="cuentadanteOrigenTraspaso">Cuentadante origen</label>
                 <div class="input-group">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
                   </div>
                   <input type="text" class="form-control" id="cuentadanteOrigenTraspaso" name="cuentadanteOrigenTraspaso" readonly>
-                </div>
-              </div>
-
-              <!-- INPUT UBICACIÓN ACTUAL -->
-              <div class="form-group col-lg-6">
-                <label for="ubicacionOrigenTraspaso">Ubicación actual</label>
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                  </div>
-                  <input type="text" class="form-control" id="ubicacionOrigenTraspaso" name="ubicacionOrigenTraspaso" readonly>
                 </div>
               </div>
 
@@ -369,8 +358,7 @@
               </div>
 
               <!-- INPUT CUENTADANTE DESTINO -->
-              <div class="form-row">
-                <div class="form-group col-lg-6">
+                <div class="form-group col-lg-12">
                   <label for="cuentadanteDestino">Cuentadante destino</label>
                   <div class="input-group">
                     <div class="input-group-prepend">
@@ -381,18 +369,6 @@
                   </div>
                 </div>
 
-                <!-- SELECT UBICACIÓN DESTINO -->
-                <div class="form-group col-lg-6">
-                  <label for="ubicacionTraspaso">Ubicación destino</label>
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-map-pin"></i></span>
-                    </div>
-                    <!-- <input type="hidden" id="ubicacionDestinoId" name="ubicacionDestinoId"> -->
-                    <input type="text" class="form-control" id="ubicacionTraspaso" name="ubicacionTraspaso" placeholder="Ej:Jane Doe" readonly>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div class="modal-footer mt-2 justify-content-between">
@@ -434,6 +410,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                   </div>
+                  <input type="hidden" id="ubicacionActualId" name="ubicacionActualId">
                   <input type="text" class="form-control" id="ubicacionActual" name="ubicacionActual" readonly>
                 </div>
               </div>
@@ -444,7 +421,7 @@
                 </div>
 
                 <div class="form-group col-lg-5">
-                  <label for="nuevaUbicacion">Nueva ubicacion</label>
+                  <label for="nuevaUbicacionId">Nueva ubicacion</label>
                   <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
@@ -454,7 +431,8 @@
                     $item = null;
                     $valor = null;
                     $ubicaciones = ControladorUbicaciones::ctrMostrarUbicaciones($item, $valor);
-                    echo '<select class="form-control" id="nuevaUbicacion" name="nuevaUbicacion" required>';
+                    // echo '<input type="hidden" id="nueva_ubicacion_id" name="nueva_ubicacion_id">';
+                    echo '<select class="form-control" id="nuevaUbicacionId" name="nuevaUbicacionId" required>';
                     echo '<option value="">Seleccione una ubicación</option>';
                     foreach ($ubicaciones as $key => $ubicacion) {
                       echo '<option value="' . $ubicacion["ubicacion_id"] . '">' . $ubicacion["nombre"] . '</option>';
