@@ -27,7 +27,7 @@ class AjaxUsuarios
         echo json_encode($respuesta);
     }
 
-   
+
 }
 
 if (isset($_POST["sede"])) {
@@ -48,4 +48,13 @@ if (isset($_POST["idSolicitante"])) {
     $solicitante->idUsuario = $_POST["idSolicitante"];
     $solicitante->item = "numero_documento";
     $solicitante->ajaxMostrarUsuario();
-} 
+}
+// Cambiar estado de usuario
+
+if (isset($_POST["idUsuarioEstado"], $_POST["estado"])) {
+    $id = $_POST["idUsuarioEstado"];
+    $estado = $_POST["estado"];
+    $respuesta = ControladorUsuarios::ctrCambiarEstadoUsuario($id, $estado);
+    echo $respuesta ? 'ok' : 'error';
+    exit;
+}

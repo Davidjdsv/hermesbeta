@@ -14,6 +14,7 @@
         public $idSolicitante;
         public $equipos;
         public $observaciones;
+        public $idPrestamo;
 
         
         /*=============================================
@@ -50,6 +51,28 @@
             echo json_encode($respuesta);
         }
 
+        public function ajaxMostrarSolicitudes()
+        {
+            $item = "usuario_id";
+            $valor = $this->idSolicitante;
+            $respuesta = ControladorSolicitudes::ctrMostrarSolicitudes($item, $valor);
+            echo json_encode($respuesta);
+        }
+
+        public function ajaxMostrarPrestamo(){
+            $item = "id_prestamo";
+            $valor = $this->idPrestamo;
+            $respuesta = ControladorSolicitudes::ctrMostrarPrestamo($item, $valor);
+            echo json_encode($respuesta);
+        }
+
+        public function ajaxMostrarPrestamoDetalle(){
+            $item = "id_prestamo";
+            $valor = $this->idPrestamo;
+            $respuesta = ControladorSolicitudes::ctrMostrarPrestamoDetalle($item, $valor);
+            echo json_encode($respuesta);
+        }
+
     }// class AjaxSolicitudes
 
 if (isset($_POST["fechaInicio"]) && isset($_POST["fechaFin"])) {
@@ -74,6 +97,23 @@ if (isset($_POST["idSolicitante"]) && isset($_POST["equipos"])) {
     $solicitud->observaciones = $_POST["observaciones"];
     $solicitud->ajaxGuardarSolicitud();    
 }
+
+if (isset($_POST["idUsuario"])){
+    $solicitud = new AjaxSolicitudes();
+    $solicitud->idSolicitante = $_POST["idUsuario"];
+    $solicitud->ajaxMostrarSolicitudes();
+}
+
+if (isset($_POST["idPrestamo"])){
+    $solicitud = new AjaxSolicitudes();
+    $solicitud->idPrestamo = $_POST["idPrestamo"];
+    $solicitud->ajaxMostrarPrestamo();    
+}
     
+if (isset($_POST["idPrestamoDetalle"])){
+    $solicitud = new AjaxSolicitudes();
+    $solicitud->idPrestamo = $_POST["idPrestamoDetalle"];
+    $solicitud->ajaxMostrarPrestamoDetalle();    
+}
 
 

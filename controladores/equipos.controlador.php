@@ -7,14 +7,14 @@ class ControladorEquipos{
         $tabla = "equipos";
         $respuesta = ModeloEquipos::mdlMostrarEquipos($tabla, $item, $valor);
         //var_dump($respuesta[0]);
-        error_log(print_r($respuesta, true));
+        // error_log($respuesta);
         return $respuesta;
     }
 
     public static function ctrAgregarEquipos(){
         if (isset($_POST["numero_serie"]) && isset($_POST["etiqueta"]) && isset($_POST["descripcion"]) && isset($_POST["ubicacion_id"]) && isset($_POST["categoria_id"]) && isset($_POST["cuentadante_id"])) {
             // Faltaban los preg match
-            if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["numero_serie"]) && preg_match('/^[a-zA-Z0-9]+$/', $_POST["etiqueta"]) && preg_match('/^[a-zA-ZñÑáéíóÁÉÍÓÚ ]+$/', $_POST["descripcion"])) {
+            if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["numero_serie"]) && preg_match('/^[a-zA-Z0-9]+$/', $_POST["etiqueta"]) && preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["descripcion"])) {
                 // Mostrar datos antes de enviarlos al modelo
                 $tabla = "equipos";
                 $datos = array(
@@ -152,7 +152,7 @@ class ControladorEquipos{
 
             $respuesta = ModeloEquipos::mdlRealizarTraspasoUbicacion($tabla, $datos);
             // var_dump($respuesta);
-            error_log(print_r($respuesta));
+            error_log($respuesta);
             if($respuesta == "ok"){
                 echo '<script>
                         swal.fire({

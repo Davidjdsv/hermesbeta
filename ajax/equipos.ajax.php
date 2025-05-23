@@ -57,7 +57,7 @@ class AjaxEquipos {
         $item = "ubicacion_id";
         $valor = $this -> nuevaUbicacionId;
         $respuesta = ControladorEquipos::ctrMostrarUbicacionDestino($item, $valor);
-        error_log(print_r($respuesta, true));
+        // error_log(print_r($respuesta, true));
         echo json_encode($respuesta);
     }
 }

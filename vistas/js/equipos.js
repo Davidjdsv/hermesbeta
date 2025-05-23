@@ -201,7 +201,7 @@ BOTÓN PARA AGREGAR AL INPUT DE LA NUEVA UBICACIÓN DEL EQUIPO
 ================================================== */
 
 $(document).on("change", "#nuevaUbicacionId", function() {
-    var nuevaUbicacionId = $(this).val();
+    var nuevaUbicacionId = $(this).val(); // Capturando la ubicación id según el select
     console.log("id ubicacion destino: ", nuevaUbicacionId);
 
     var datos = new FormData();

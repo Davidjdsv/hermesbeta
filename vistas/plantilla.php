@@ -28,8 +28,6 @@
     <link rel="stylesheet" href="vistas/dist/css/adminlte.css">
     <!-- mi css -->
     <link rel="stylesheet" href="vistas/css/plantilla.css">
-    <!-- Toastr -->
-    <link rel="stylesheet" href="vistas/plugins/toastr/toastr.min.css">
 
     <!-- ================================================================================================== -->    
     
@@ -61,9 +59,6 @@
     <!-- SweetAlert2 -->
     <!-- <script src="vistas/plugins/sweetalert2/sweetalert2.min.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Toastr -->
-    <script src="vistas/plugins/toastr/toastr.min.js"></script>
     
 
     <!-- AdminLTE App -->
@@ -108,11 +103,14 @@
           $_GET["ruta"] == "inventario" ||
           $_GET["ruta"] == "recepcion" ||
           $_GET["ruta"] == "solicitudes" ||
+          $_GET["ruta"] == "consultar-solicitudes" ||
+          $_GET["ruta"] == "mis-solicitudes" ||
           $_GET["ruta"] == "autorizaciones" ||
           $_GET["ruta"] == "vencidas" ||
           $_GET["ruta"] == "devoluciones" ||
           $_GET["ruta"] == "salidas" ||
           $_GET["ruta"] == "reportes" ||
+          $_GET["ruta"] == "reporte-equipos" ||
           $_GET["ruta"] == "desactivado" ||
           $_GET["ruta"] == "salir") {
 
@@ -142,5 +140,6 @@
   <script src="vistas/js/usuarios.js"></script>
   <script src="vistas/js/solicitudes.js"></script>
   <script src="vistas/js/equipos.js"></script>
+  <script src="vistas/js/consultar-solicitudes.js"></script>
 </body>
 </html>

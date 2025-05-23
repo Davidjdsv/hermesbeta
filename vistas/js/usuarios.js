@@ -1,11 +1,10 @@
-
 //************************************************************
 // 
 //  SCRIPT PARA AGREGAR USUARIOS
 // 
 //************************************************************/
 
-$(document).on("change", "#selectRol" , function() {
+$(document).on("change", "#selectRol", function() {
     var idRol = $(this).val();
     console.log(idRol);
     // si el rol es aprendiz, mostrar los inputs de ficha y sede
@@ -14,15 +13,41 @@ $(document).on("change", "#selectRol" , function() {
         $("#selectSede").prop("required", true);
         $("#id_ficha").prop("required", true);
         // $("#ficha").removeClass("d-none");
-    }
-    else {
+    } else {
         $("#sede").addClass("d-none");
         $("#ficha").addClass("d-none");
         $("#selectSede").removeAttr("required");
         $("#id_ficha").removeAttr("required");
-        
+
         // $("#ficha").addClass("d-none");
     }
+});
+//************************************************************
+// script para cambiar los estados de los usuarios
+//************************************************************/
+$(document).on('click', '.btnActivarUsuario', function() {
+    var idUsuario = $(this).data('id');
+    var nuevoEstado = $(this).data('estado');
+    var boton = $(this);
+
+    $.ajax({
+        url: 'ajax/usuarios.ajax.php',
+        method: 'POST',
+        data: { idUsuarioEstado: idUsuario, estado: nuevoEstado }, // <-- CAMBIA AQUÍ
+        success: function(respuesta) {
+            if (respuesta == 'ok') {
+                if (nuevoEstado == 'activo') {
+                    boton.removeClass('btn-danger').addClass('btn-success').text('Activo');
+                    boton.data('estado', 'inactivo');
+                } else {
+                    boton.removeClass('btn-success').addClass('btn-danger').text('Inactivo');
+                    boton.data('estado', 'activo');
+                }
+            } else {
+                alert('Error al cambiar el estado');
+            }
+        }
+    });
 });
 
 $(document).on("change", "#selectSede", function() {
@@ -62,7 +87,7 @@ $(document).on("change", "#selectSede", function() {
                 console.warn("No se encontraron fichas para la sede seleccionada.");
                 $("#id_ficha").empty().append('<option value="">No hay fichas disponibles</option>');
                 $("#ficha").addClass("d-none");
-            }else if (Array.isArray(respuesta) && respuesta.length > 0) {  //Se se reciben varias fichas
+            } else if (Array.isArray(respuesta) && respuesta.length > 0) { //Se se reciben varias fichas
                 // console.log("Respuesta es un array y tiene elementos:", respuesta);
                 fichaSelect.append('<option value="">Ficha</option>');
                 // Agrega las nuevas opciones al select de ficha
@@ -70,12 +95,12 @@ $(document).on("change", "#selectSede", function() {
                     fichaSelect.append('<option value="' + ficha.id_ficha + '">' + ficha.codigo + '</option>');
                 });
                 $("#ficha").removeClass("d-none");
-            }else {  //Se recibe una sola ficha
+            } else { //Se recibe una sola ficha
                 // console.log("Respuesta no es un array o tiene un solo elemento:", respuesta);
                 fichaSelect.append('<option value="' + respuesta["id_ficha"] + '">' + respuesta["codigo"] + '</option>');
                 $("#nombre_programa").prop("placeholder", respuesta["descripcion"]);
                 $("#ficha").removeClass("d-none");
-            }      
+            }
         },
         error: function(error) {
             console.error("Error al obtener las fichas:", error);
@@ -87,13 +112,124 @@ $(document).on("change", "#selectSede", function() {
 });
 
 
+// ======================================
+// PREVISUALIZACIÓN DE IMAGEN (EDITAR PERFIL)
+// ======================================
+
+function previewImage(event) {
+    const input = event.target;
+    const preview = document.getElementById('vistaPreviaFoto');
+    const file = input.files[0];
+
+    // Validar tipo y tamaño de archivo
+    if (file) {
+        if (!file.type.match('image/jpeg') && !file.type.match('image/png')) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'El archivo debe ser una imagen JPG o PNG'
+            });
+            input.value = '';
+            return;
+        }
+
+        if (file.size > 2 * 1024 * 1024) { // 2MB
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La imagen no debe superar los 2MB'
+            });
+            input.value = '';
+            return;
+        }
+
+        // Mostrar vista previa
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+        }
+        reader.readAsDataURL(file);
+    }
+}
+
+// ======================================
+// SCRIPT PARA CONSULTAR USUARIOS
+// ======================================
+$(document).on("click", ".btnConsultarUsuario", function(){
+    var idUsuario = $(this).attr("idUsuario");
+    
+    var datos = new FormData();
+    datos.append("idUsuario", idUsuario);
+
+    $.ajax({
+        url: "ajax/usuarios.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function(respuesta) {
+            $("#idConsultarUsuario").val(respuesta.id_usuario);
+            $("#consultarNombre").val(respuesta.nombre);
+            $("#consultarApellido").val(respuesta.apellido);
+            $("#consultarTipoDocumento").val(respuesta.tipo_documento);
+            $("#consultarNumeroDocumento").val(respuesta.numero_documento);
+            $("#consultarRol").val(respuesta.nombre_rol);
+            $("#consultarEmail").val(respuesta.correo_electronico);
+            $("#consultarTelefono").val(respuesta.telefono);
+            $("#consultarDireccion").val(respuesta.direccion);
+
+            // Mostrar género si existe
+            if (respuesta.genero !== undefined && respuesta.genero !== null) {
+                let generoTexto = '';
+                switch (parseInt(respuesta.genero)) {
+                    case 1:
+                        generoTexto = 'Femenino';
+                        break;
+                    case 2:
+                        generoTexto = 'Masculino';
+                        break;
+                    case 3:
+                        generoTexto = 'No definido / Prefiere no decir';
+                        break;
+                    case 0:
+                    default:
+                        generoTexto = 'No declara';
+                        break;
+                }
+                $("#consultarGenero").val(generoTexto);
+            } else if (respuesta.genero_texto !== undefined && respuesta.genero_texto !== null) {
+                $("#consultarGenero").val(respuesta.genero_texto);
+            } else {
+                $("#consultarGenero").val('');
+            }
+
+            // Mostrar sede y ficha si el rol es aprendiz 
+            if(respuesta.id_rol == 6) {
+                $("#consultarSedeFicha").removeClass("d-none");
+                $("#consultarSede").val(respuesta.nombre_sede || '');
+
+                // Mostrar ficha 
+                let ficha = respuesta.codigo_ficha || respuesta.codigo || '';
+                let programa = respuesta.nombre_programa || respuesta.descripcion || respuesta.descripcion_ficha || '';
+                $("#consultarFicha").val(ficha && programa ? ficha + " - " + programa : ficha || programa);
+                } else {
+                    $("#consultarSedeFicha").addClass("d-none");
+                    $("#consultarSede").val('');
+                    $("#consultarFicha").val('');
+                }
+        }
+    });
+});
+
 //************************************************************
 // 
 //  SCRIPT PARA EDITAR USUARIOS
 // 
 //************************************************************/
 
-$(document).on("change", "#selectEditRolUsuario" , function() {
+$(document).on("change", "#selectEditRolUsuario", function() {
     var idRol = $(this).val();
     console.log(idRol);
     // si el rol es aprendiz, mostrar los inputs de ficha y sede
@@ -102,13 +238,12 @@ $(document).on("change", "#selectEditRolUsuario" , function() {
         $("#selectEditSede").prop("required", true);
         $("#selectEditIdFicha").prop("required", true);
         // $("#ficha").removeClass("d-none");
-    }
-    else {
+    } else {
         $("#editSede").addClass("d-none");
         $("#EditFicha").addClass("d-none");
         $("#selectEditSede").removeAttr("required");
         $("#selectEditIdFicha").removeAttr("required");
-        
+
         // $("#ficha").addClass("d-none");
     }
 })
@@ -138,19 +273,19 @@ $(document).on("change", "#selectEditSede", function() {
 
             var fichaSelect = $("#selectEditIdFicha");
             fichaSelect.empty();
-             
 
-            
+
+
             // Verifica si se recibieron fichas
             if (!respuesta || respuesta.length === 0 || respuesta[0] == null || respuesta[0] == undefined) {
                 console.warn("No se encontraron fichas para la sede seleccionada.");
                 $("#selectEditIdFicha").empty().append('<option value="">No hay fichas disponibles</option>');
-                  Toast.fire({
+                Toast.fire({
                     icon: 'error',
                     title: 'No hay fichas disponibles para la sede seleccionada.'
-                  }); 
+                });
                 $("#EditFicha").addClass("d-none");
-            }else if (Array.isArray(respuesta) && respuesta.length > 0) {  //Se se reciben varias fichas
+            } else if (Array.isArray(respuesta) && respuesta.length > 0) { //Se se reciben varias fichas
                 // Agrega las nuevas opciones al select de ficha
                 fichaSelect.append('<option value="">Ficha</option>');
                 $("#nombreEditPrograma").prop("placeholder", "Programa");
@@ -158,12 +293,12 @@ $(document).on("change", "#selectEditSede", function() {
                     fichaSelect.append('<option value="' + ficha.id_ficha + '">' + ficha.codigo + '</option>');
                 });
                 $("#EditFicha").removeClass("d-none");
-            }else {  //Se recibe una sola ficha
+            } else { //Se recibe una sola ficha
                 // console.log("Respuesta no es un array o tiene un solo elemento:", respuesta);
                 fichaSelect.append('<option value="' + respuesta["id_ficha"] + '">' + respuesta["codigo"] + '</option>');
                 $("#nombreEditPrograma").prop("placeholder", respuesta["descripcion"]);
                 $("#EditFicha").removeClass("d-none");
-            }      
+            }
             $("#selectEditSede").attr("inicial", "false");
         },
         error: function(error) {
@@ -199,7 +334,7 @@ $(document).on("change", "#id_ficha", function() {
             console.error("Error al obtener los datos de la ficha:", error);
             // Manejo de error
         }
-    });    
+    });
 })
 
 
@@ -225,7 +360,7 @@ $(document).on("change", "#selectEditIdFicha", function() {
             console.error("Error al obtener los datos de la ficha:", error);
             // Manejo de error
         }
-    });    
+    });
 })
 
 $(document).on("click", ".btnEditarUsuario", function() {
@@ -269,7 +404,7 @@ $(document).on("click", ".btnEditarUsuario", function() {
             $("#optionEditSede").html(respuesta["nombre_sede"]);
             //disparar el evento change para cargar las fichas de la sede seleccionada
             // $("#selectEditSede").trigger("change");
-            
+
             $("#optionEditIdFicha").val(respuesta["id_ficha"]);
             $("#optionEditIdFicha").html(respuesta["codigo"]);
             $("#editEmail").val(respuesta["correo_electronico"]);
@@ -286,4 +421,3 @@ $('#modalEditarUsuario').on('hidden.bs.modal', function() {
     // location.reload();
     // Clear all input fields inside the modal
 });
-
