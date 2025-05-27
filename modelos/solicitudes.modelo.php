@@ -2,10 +2,12 @@
 
 require_once "conexion.php";
 
-class ModeloSolicitudes{
+class ModeloSolicitudes
+{
 
-    static public function mdlMostrarEquiposDisponible($fechaInicio, $fechaFin){
-        
+    static public function mdlMostrarEquiposDisponible($fechaInicio, $fechaFin)
+    {
+
         $stmt = Conexion::conectar()->prepare("SELECT e.*,
                                                     c.nombre AS categoria_nombre,
                                                     u.nombre AS ubicacion_nombre,
@@ -33,7 +35,7 @@ class ModeloSolicitudes{
                                                         )
                                                     )
                                                 )"
-                                            );
+        );
 
         $stmt->bindParam(":fechaInicio", $fechaInicio, PDO::PARAM_STR);
         $stmt->bindParam(":fechaFin", $fechaFin, PDO::PARAM_STR);
@@ -56,14 +58,22 @@ class ModeloSolicitudes{
 
         try{
             $conexion->beginTransaction();
+            $sql = "INSERT INTO $tabla (usuario_id, tipo_prestamo, fecha_inicio, fecha_fin, estado_prestamo, motivo) VALUES (:usuario_id, :tipo_prestamo, :fechaInicio, :fechaFin, :estado_prestamo, :motivo)";
 
-            $stmt = $conexion->prepare("INSERT INTO $tabla (usuario_id, tipo_prestamo, fecha_inicio, fecha_fin, estado_prestamo, motivo) VALUES (:usuario_id, :tipo_prestamo, :fechaInicio, :fechaFin, :estado_prestamo, :motivo)");
-            $stmt->bindParam(":usuario_id", $datos["idSolicitante"], PDO::PARAM_INT);
+            // error log de la consulta SQL con los datos enviados para debuggear
+            error_log("INSERT INTO $tabla (usuario_id, tipo_prestamo, fecha_inicio, fecha_fin, estado_prestamo, motivo) VALUES ({$datos['usuario_id']}, {$datos['tipo_prestamo']}, {$datos['fecha_inicio']}, {$datos['fecha_fin']}, {$datos['estado_prestamo']}, {$datos['motivo']})");
+
+            // error_log("SQL: $sql", 0);
+            error_log("Datos: " . print_r($datos, true), 0); 
+            
+
+            $stmt = $conexion->prepare($sql);
+            $stmt->bindParam(":usuario_id", $datos["usuario_id"], PDO::PARAM_INT);
             $stmt->bindParam(":tipo_prestamo", $datos["tipo_prestamo"], PDO::PARAM_STR);
-            $stmt->bindParam(":fechaInicio", $datos["fechaInicio"], PDO::PARAM_STR);
-            $stmt->bindParam(":fechaFin", $datos["fechaFin"], PDO::PARAM_STR);
+            $stmt->bindParam(":fechaInicio", $datos["fecha_inicio"], PDO::PARAM_STR);
+            $stmt->bindParam(":fechaFin", $datos["fecha_fin"], PDO::PARAM_STR);
             $stmt->bindParam(":estado_prestamo", $datos["estado_prestamo"], PDO::PARAM_STR);
-            $stmt->bindParam(":motivo", $datos["observaciones"], PDO::PARAM_STR);
+            $stmt->bindParam(":motivo", $datos["motivo"], PDO::PARAM_STR);
             $stmt->execute();
 
             $idPrestamo = $conexion->lastInsertId();
@@ -85,26 +95,39 @@ class ModeloSolicitudes{
         
     } //metodo mdlGuardarSolicitud
 
-    static public function mdlMostrarSolicitudes($item, $valor){
+   
+    public static function mdlContarEquiposPorCategoria() {
+        $stmt = Conexion::conectar()->prepare("SELECT categoria_id, COUNT(*) as cantidad
+            FROM equipos
+            WHERE id_estado = 1
+            GROUP BY categoria_id
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // [categoria_id => cantidad]
+    }
+
+    static public function mdlMostrarSolicitudes($item, $valor)
+    {
 
         $stmt = Conexion::conectar()->prepare("SELECT p.*  FROM prestamos p WHERE p.$item = :$item");
-        $stmt->bindParam(":".$item, $valor, PDO::PARAM_INT);
+        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
         $stmt->execute();
         //VERIFICAMOS EL TAMAÑO DE LA RESPUESTA
-        if($stmt->rowCount() > 0){
+        if ($stmt->rowCount() > 0) {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        }else{
+        } else {
             return "vacio";
         }
 
         $stmt->close();
-        $stmt = null;                                                    
+        $stmt = null;
     }
 
-    static public function mdlMostrarPrestamo($item, $valor){
+    static public function mdlMostrarPrestamo($item, $valor)
+    {
 
         $stmt = Conexion::conectar()->prepare("SELECT p.* FROM prestamos p WHERE p.$item = :$item");
-        $stmt->bindParam(":".$item, $valor, PDO::PARAM_INT);
+        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
         $stmt->execute();
 
         //verificamos el tamaño de la respuesta
@@ -119,7 +142,8 @@ class ModeloSolicitudes{
 
     }
 
-    static public function mdlMostrarPrestamoDetalle($item, $valor){
+    static public function mdlMostrarPrestamoDetalle($item, $valor)
+    {
 
         $stmt = Conexion::conectar()->prepare("SELECT dp.*, e.*, u.nombre as ubicacion, c.nombre as categoria
                                                 FROM detalle_prestamo dp 
@@ -128,12 +152,12 @@ class ModeloSolicitudes{
                                                 JOIN categorias c ON e.categoria_id = c.categoria_id
                                                 WHERE dp.$item = :$item");
 
-        $stmt->bindParam(":".$item, $valor, PDO::PARAM_INT);
+        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
         $stmt->execute();
 
         //verificamos el tamaño de la respuesta
         if($stmt->rowCount() == 1){
-            return $stmt->fetch(PDO::FETCH_ASSOC);            
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);            
         }else{
             return $stmt->fetchAll(PDO::FETCH_ASSOC);            
         }
@@ -142,5 +166,26 @@ class ModeloSolicitudes{
         $stmt->close();
         $stmt = null;
     }
+
+    static public function mdlMostrarHistorial($tabla, $item, $valor)
+    {
+        if ($item != null) {
+            // continue;
+            $stmt = Conexion::conectar()->prepare("SELECT *  FROM $tabla WHERE $item = :$item");
+            $stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll();
+        } else {
+            $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+
+    
+
+
 
 }//ModeloSolicitudes

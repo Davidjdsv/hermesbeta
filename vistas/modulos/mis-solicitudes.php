@@ -36,7 +36,7 @@
 
                                 $item = "usuario_id";
                                 $valor = $_SESSION['id_usuario'];
-                                $prestamos = ControladorSolicitudes::ctrMostrarPrestamo($item, $valor);
+                                $prestamos = ControladorSolicitudes::ctrMostrarSolicitudes($item, $valor);
                                 // var_dump($prestamos);
                                 
                                 // Verificamos si es un array multidimensional

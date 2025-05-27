@@ -31,23 +31,26 @@ $(document).on('click', '.btnActivarUsuario', function() {
     var boton = $(this);
 
     $.ajax({
-        url: 'ajax/usuarios.ajax.php',
-        method: 'POST',
-        data: { idUsuarioEstado: idUsuario, estado: nuevoEstado }, // <-- CAMBIA AQUÍ
-        success: function(respuesta) {
-            if (respuesta == 'ok') {
-                if (nuevoEstado == 'activo') {
-                    boton.removeClass('btn-danger').addClass('btn-success').text('Activo');
-                    boton.data('estado', 'inactivo');
-                } else {
-                    boton.removeClass('btn-success').addClass('btn-danger').text('Inactivo');
-                    boton.data('estado', 'activo');
-                }
-            } else {
-                alert('Error al cambiar el estado');
-            }
+    url: "ajax/usuarios.ajax.php",
+    method: "POST",
+    data: {
+        idUsuarioEstado: idUsuario,
+        estado: nuevoEstado
+    },
+    success: function(respuesta) {
+        console.log("Respuesta:", respuesta);
+        if (respuesta.trim() === "ok") {
+            Swal.fire("Éxito", "Estado actualizado", "success").then(() => {
+                location.reload();
+            });
+        } else {
+            Swal.fire("Error", "No se pudo cambiar el estado", "error");
         }
-    });
+    },
+    error: function() {
+        Swal.fire("Error", "Fallo de conexión con el servidor", "error");
+    }
+});
 });
 
 $(document).on("change", "#selectSede", function() {
@@ -153,11 +156,61 @@ function previewImage(event) {
 }
 
 // ======================================
+// SOLICITUDES DE PRESTAMO DEL USUARIO
+// ======================================
+$(document).on("click", ".btnSolicitudesUsuario", function() {
+    // Obtener el número de documento del usuario seleccionado
+    var numeroDocumento = $(this).data("numero-documento");
+    var idUsuario = $(this).data("id-usuario");
+
+    if (!numeroDocumento) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se encontró el número de documento del usuario'
+        });
+        return;
+    }
+
+    // Redirigir a consultar-solicitudes con los parámetros necesarios
+    window.location.href = "consultar-solicitudes?" +
+        "numeroDocumento=" + encodeURIComponent(numeroDocumento) +
+        "&autoBuscar=1";
+});
+
+// ======================================
+// AUTOCOMPLETAR BÚSQUEDA DE USUARIO
+// ======================================
+$(document).ready(function() {
+    // Obtener parámetros de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const numeroDocumento = urlParams.get('numeroDocumento');
+    const autoBuscar = urlParams.get('autoBuscar');
+
+    // Si tenemos el número de documento y autoBuscar es true
+    if (numeroDocumento && autoBuscar === "1") {
+        // Establecer el valor en el input
+        $("#cedulaUsuario").val(numeroDocumento);
+
+        // Simular click en el botón de búsqueda después de un pequeño delay
+        setTimeout(function() {
+            const btnBuscar = $("#btnBuscarUsuarioConsultar");
+            if (btnBuscar.length) {
+                btnBuscar.trigger('click');
+            } else {
+                console.error("No se encontró el botón de búsqueda");
+            }
+        }, 500); // Esperar 500ms para asegurar que todo esté cargado
+    }
+});
+
+
+// ======================================
 // SCRIPT PARA CONSULTAR USUARIOS
 // ======================================
-$(document).on("click", ".btnConsultarUsuario", function(){
+$(document).on("click", ".btnConsultarUsuario", function() {
     var idUsuario = $(this).attr("idUsuario");
-    
+
     var datos = new FormData();
     datos.append("idUsuario", idUsuario);
 
@@ -206,7 +259,7 @@ $(document).on("click", ".btnConsultarUsuario", function(){
             }
 
             // Mostrar sede y ficha si el rol es aprendiz 
-            if(respuesta.id_rol == 6) {
+            if (respuesta.id_rol == 6) {
                 $("#consultarSedeFicha").removeClass("d-none");
                 $("#consultarSede").val(respuesta.nombre_sede || '');
 
@@ -214,11 +267,19 @@ $(document).on("click", ".btnConsultarUsuario", function(){
                 let ficha = respuesta.codigo_ficha || respuesta.codigo || '';
                 let programa = respuesta.nombre_programa || respuesta.descripcion || respuesta.descripcion_ficha || '';
                 $("#consultarFicha").val(ficha && programa ? ficha + " - " + programa : ficha || programa);
-                } else {
-                    $("#consultarSedeFicha").addClass("d-none");
-                    $("#consultarSede").val('');
-                    $("#consultarFicha").val('');
-                }
+            } else {
+                $("#consultarSedeFicha").addClass("d-none");
+                $("#consultarSede").val('');
+                $("#consultarFicha").val('');
+            }
+
+
+            // Mostrar foto relacionado de la bd de datos (ruta)
+            if (respuesta.foto && respuesta.foto !== "") {
+                $("#consultarFotoUsuario").attr("src", respuesta.foto).removeClass("d-none");
+            } else {
+                $("#consultarFotoUsuario").attr("src", "vistas/img/usuarios/default/anonymous.png").removeClass("d-none");
+            }
         }
     });
 });
@@ -243,10 +304,33 @@ $(document).on("change", "#selectEditRolUsuario", function() {
         $("#EditFicha").addClass("d-none");
         $("#selectEditSede").removeAttr("required");
         $("#selectEditIdFicha").removeAttr("required");
-
         // $("#ficha").addClass("d-none");
     }
-})
+});
+
+// Mostrar foto de usuario al editar
+$(document).on("click", ".btnEditarUsuario", function() {
+    var idUsuario = $(this).attr("idUsuario") || $(this).attr("idusuario");
+    var datos = new FormData();
+    datos.append("idUsuario", idUsuario);
+    $.ajax({
+        url: "ajax/usuarios.ajax.php",
+        method: "POST",
+        data: datos,
+        cache: false,
+        contentType: false,
+        processData: false,
+        dataType: "json",
+        success: function(respuesta) {
+            // ... (otros campos)
+            if (respuesta["foto"] && respuesta["foto"].trim() !== "") {
+                $("#editFotoUsuario").attr("src", respuesta["foto"]).removeClass("d-none");
+            } else {
+                $("#editFotoUsuario").attr("src", "vistas/img/usuarios/default/anonymous.png").removeClass("d-none");
+            }
+        }
+    });
+});
 
 $(document).on("change", "#selectEditSede", function() {
 
@@ -364,7 +448,8 @@ $(document).on("change", "#selectEditIdFicha", function() {
 })
 
 $(document).on("click", ".btnEditarUsuario", function() {
-    var idUsuario = $(this).attr("idUsuario");
+
+    var idUsuario = $(this).attr("idUsuario") || $(this).attr("idusuario");
     var datos = new FormData();
     datos.append("idUsuario", idUsuario);
     $.ajax({
@@ -402,6 +487,7 @@ $(document).on("click", ".btnEditarUsuario", function() {
             $("#selectEditSede").attr("idSede", respuesta["id_sede"]);
             $("#optionEditSede").val(respuesta["id_sede"]);
             $("#optionEditSede").html(respuesta["nombre_sede"]);
+            //$("#selectEditSede").trigger("change");
             //disparar el evento change para cargar las fichas de la sede seleccionada
             // $("#selectEditSede").trigger("change");
 
@@ -411,12 +497,18 @@ $(document).on("click", ".btnEditarUsuario", function() {
             $("#editTelefono").val(respuesta["telefono"]);
             $("#editDireccion").val(respuesta["direccion"]);
             $("#nombreEditPrograma").prop("placeholder", respuesta["descripcion_ficha"]);
+
+            // Aquí agregamos estado y condicion
+            $("#editEstado").val(respuesta["estado"]);
+            $("#editCondicion").val(respuesta["condicion"]);
         }
     });
 });
 
-// Clear modal inputs when the modal is hidden
+// Limpiar inputs al cerrar modal (opcional)
 $('#modalEditarUsuario').on('hidden.bs.modal', function() {
+    $(this).find('form')[0].reset();
+    // También puedes limpiar select2 u otros componentes si usas
     //recargar las vista de usuarios
     // location.reload();
     // Clear all input fields inside the modal

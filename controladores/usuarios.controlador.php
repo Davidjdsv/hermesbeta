@@ -8,7 +8,7 @@ class ControladorUsuarios{
                 preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingPassword"])) {
                 
                 $encriptar = crypt($_POST["ingPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
-                
+                //echo $encriptar;
 
                 $tabla = "usuarios";
                 $item = "nombre_usuario";
@@ -48,72 +48,6 @@ class ControladorUsuarios{
             }
         }
     }
-}
-/*=============================================
-cambiar estado de usuario
-=============================================*/
-
-    static public function ctrConsultarUsuario() {
-        if(isset($_POST["idUsuario"])) {
-            $item = "id_usuario";
-            $valor = $_POST["idUsuario"];
-            
-            $respuesta = ModeloUsuarios::mdlMostrarUsuarios("usuarios", $item, $valor);
-
-            if ($respuesta && is_array($respuesta)) {
-
-                // Se asigna nombre genero_texto según el valor de genero para no mostrar el número
-                switch($respuesta["genero"]) {
-                    case "1":
-                        $respuesta["genero_texto"] = "Femenino";
-                        break;
-                    case "2":
-                        $respuesta["genero_texto"] = "Masculino";
-                        break;
-                    default:
-                        $respuesta["genero_texto"] = "No declara";
-                }
-
-                // Solamente si es aprendiz(id_rol = 6), obtener datos de sede y ficha
-                if(isset($respuesta["id_rol"]) && $respuesta["id_rol"] == 6) {
-                    // Obtener datos de la sede
-                    if (!empty($respuesta["id_sede"])) {
-                        $sede = ControladorSedes::ctrMostrarSedes("id_sede", $respuesta["id_sede"]);
-                        if ($sede && isset($sede["nombre_sede"])) {
-                            $respuesta["nombre_sede"] = $sede["nombre_sede"];
-                        } else {
-                            $respuesta["nombre_sede"] = "";
-                        }
-                    } else {
-                        $respuesta["nombre_sede"] = "";
-                    }
-
-                    // Obtener datos de la ficha
-                    if (!empty($respuesta["id_ficha"])) {
-                        $ficha = ModeloUsuarios::mdlMostrarFichasSede("fichas", "id_ficha", $respuesta["id_ficha"]);
-                        if($ficha && isset($ficha["codigo"]) && isset($ficha["nombre_programa"])) {
-                            $respuesta["codigo_ficha"] = $ficha["codigo"];
-                            $respuesta["nombre_programa"] = $ficha["nombre_programa"];
-                        } else {
-                            $respuesta["codigo_ficha"] = "";
-                            $respuesta["nombre_programa"] = "";
-                        }
-                    } else {
-                        $respuesta["codigo_ficha"] = "";
-                        $respuesta["nombre_programa"] = "";
-                    }
-                }
-            } else {
-                $respuesta = array("error" => "Usuario no encontrado");
-            }
-
-            echo json_encode($respuesta);
-        }
-    }
-
-
-static public function ctrCambiarEstadoUsuario($id, $estado) {
-    return ModeloUsuarios::mdlCambiarEstadoUsuario($id, $estado);
 }
 
     static public function ctrEditarPerfil() {
@@ -353,55 +287,69 @@ static public function ctrCambiarEstadoUsuario($id, $estado) {
         return $respuesta;
     }
 
-    static public function ctrEditarUsuario(){
-        
-        if (isset($_POST["idEditUsuario"]) && isset($_POST["editNombre"]) && isset($_POST["selectEditSede"])) {   
+    static public function ctrEditarUsuario() {
+        if (isset($_POST["idEditUsuario"]) && isset($_POST["editNombre"]) && isset($_POST["selectEditSede"])) {
 
-            
-            if (preg_match('/^[a-zA-ZñÑáéíóÁÉÍÓÚ ]+$/', $_POST["editNombre"]) &&
+            if (
+                preg_match('/^[a-zA-ZñÑáéíóÁÉÍÓÚ ]+$/', $_POST["editNombre"]) &&
                 preg_match('/^[a-zA-ZñÑáéíóÁÉÍÓÚ ]+$/', $_POST["editApellido"]) &&
                 preg_match('/^[a-zA-Z0-9]+$/', $_POST["editNumeroDocumento"]) &&
                 preg_match('/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $_POST["editEmail"]) &&
                 preg_match('/^[0-9]+$/', $_POST["editTelefono"]) &&
-                preg_match('/^[a-zA-Z0-9#\- ]+$/', $_POST["editDireccion"]) ){
-                    //error de rol origina y rol nuevo
-                    error_log("rol original " . $_POST["rolOriginal"]. " rol nuevo " . $_POST["EditRolUsuario"]);
+                preg_match('/^[a-zA-Z0-9#\- ]+$/', $_POST["editDireccion"])
+            ) {
+                // Iniciar sesión para obtener id del usuario editor
+                if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+                $idEditor = $_SESSION["id_usuario"] ?? null;
 
+                // Validar que haya sesión activa
+                if (!$idEditor) {
+                    echo '<script>
+                        Swal.fire({
+                            icon: "error",
+                            title: "No hay sesión iniciada",
+                            showConfirmButton: true,
+                            confirmButtonText: "Cerrar"
+                        }).then(() => { window.location = "login"; });
+                    </script>';
+                    return;
+                }
 
-                // si el usuario es aprendiz se debe validar la sede y la ficha
+                // Si el usuario es aprendiz se debe validar la sede y la ficha
                 if ($_POST["EditRolUsuario"] != 6) {
                     $sede = "";
                     $ficha = "";
-                }else{
+                } else {
                     $sede = $_POST["selectEditSede"];
                     $ficha = $_POST["selectEditIdFicha"];
                 }
 
                 // Obtener datos actuales del usuario
                 $usuario = self::ctrMostrarUsuarios("id_usuario", $_POST["idEditUsuario"]);
-                
+
                 // Verificar si cambió el número de documento para reubicar la carpeta de imágenes
                 $numeroDocumentoAnterior = $usuario["numero_documento"];
                 $numeroDocumentoNuevo = $_POST["editNumeroDocumento"];
-                
+
                 // Ruta actual de la foto
                 $rutaFoto = $usuario["foto"];
-                
+
                 // Si el número de documento cambió y había una foto personalizada
-                if ($numeroDocumentoAnterior != $numeroDocumentoNuevo && 
+                if (
+                    $numeroDocumentoAnterior != $numeroDocumentoNuevo &&
                     $rutaFoto != "vistas/img/usuarios/default/anonymous.png" &&
-                    strpos($rutaFoto, "vistas/img/usuarios/{$numeroDocumentoAnterior}/") !== false) {
-                    
-                // Crear nuevo directorio si no existe
-                $nuevoDirectorio = "vistas/img/usuarios/{$numeroDocumentoNuevo}";
+                    strpos($rutaFoto, "vistas/img/usuarios/{$numeroDocumentoAnterior}/") !== false
+                ) {
+                    // Crear nuevo directorio si no existe
+                    $nuevoDirectorio = "vistas/img/usuarios/{$numeroDocumentoNuevo}";
                     if (!file_exists($nuevoDirectorio)) {
                         mkdir($nuevoDirectorio, 0755, true);
                     }
-                    
+
                     // Obtener solo el nombre del archivo
                     $nombreArchivo = basename($rutaFoto);
                     $nuevaRutaFoto = "{$nuevoDirectorio}/{$nombreArchivo}";
-                    
+
                     // Copiar la imagen al nuevo directorio
                     if (file_exists($rutaFoto)) {
                         copy($rutaFoto, $nuevaRutaFoto);
@@ -410,7 +358,7 @@ static public function ctrCambiarEstadoUsuario($id, $estado) {
                 }
 
                 $tabla = "usuarios";
-                
+
                 $datos = array(
                     "id_usuario" => $_POST["idEditUsuario"],
                     "tipo_documento" => $_POST["editTipoDocumento"],
@@ -423,15 +371,12 @@ static public function ctrCambiarEstadoUsuario($id, $estado) {
                     "genero" => $_POST["editGenero"],
                     "id_rol" => $_POST["EditRolUsuario"],
                     "foto" => $rutaFoto,
-                    // si es aprendiz
                     "id_sede" => $sede,
                     "id_ficha" => $ficha,
-                    //datos originales ids de rol y ficha
                     "idRolOriginal" => $_POST["rolOriginal"],
-                    "idFichaOriginal" => $_POST["fichaOriginal"]
+                    "idFichaOriginal" => $_POST["fichaOriginal"],
+                    "id_usuario_editor" => $idEditor
                 );
-
-                error_log("Datos a enviar: " . json_encode($datos));
 
                 $respuesta = ModeloUsuarios::mdlEditarUsuario($tabla, $datos);
 
@@ -466,7 +411,7 @@ static public function ctrCambiarEstadoUsuario($id, $estado) {
                 echo '<script>
                     Swal.fire({
                         icon: "error",
-                        title: "¡Revisar parametros!",
+                        title: "¡Revisar parámetros!",
                         showConfirmButton: true,
                         confirmButtonText: "Cerrar"
                     }).then((result) => {
@@ -477,6 +422,24 @@ static public function ctrCambiarEstadoUsuario($id, $estado) {
                 </script>';
             }
         }
-    } 
+    }
 
-}  //fin de la clase ControladorUsuarios
+    static public function ctrCambiarEstadoUsuario($id, $estado) {
+        if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+        $idEditor = $_SESSION["id_usuario"] ?? null;
+
+        if (!$idEditor) {
+            return false; // O manejar error sesión no iniciada
+        }
+
+        $tabla = "usuarios";
+        $datos = [
+            "id_usuario" => $id,
+            "estado" => $estado,
+            "id_usuario_editor" => $idEditor
+        ];
+
+        return ModeloUsuarios::mdlCambiarEstadoUsuario($tabla, $datos);
+    }
+}
+?>

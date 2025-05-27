@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-05-2025 a las 22:10:06
+-- Tiempo de generación: 20-05-2025 a las 17:56:37
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -43,7 +43,8 @@ INSERT INTO `aprendices_ficha` (`id_aprendiz_ficha`, `id_usuario`, `id_ficha`, `
 (2, 44, 5, '2025-04-04 17:32:43', 'activo'),
 (3, 50, 4, '2025-04-04 17:32:43', 'activo'),
 (4, 60, 10, '2025-04-04 17:32:43', 'activo'),
-(5, 72, 11, '2025-04-13 17:11:36', 'activo');
+(5, 72, 11, '2025-04-13 17:11:36', 'activo'),
+(6, 73, 1, '2025-05-15 15:59:20', 'activo');
 
 -- --------------------------------------------------------
 
@@ -121,81 +122,95 @@ CREATE TABLE `equipos` (
 --
 
 INSERT INTO `equipos` (`equipo_id`, `numero_serie`, `etiqueta`, `descripcion`, `fecha_entrada`, `ubicacion_id`, `categoria_id`, `cuentadante_id`, `id_estado`) VALUES
-(1, 'SN001', '9125001SN001', 'HP EliteBook 840', '2025-04-17 15:42:57', 1, 1, 50, 2),
-(2, 'SN002', '9125001SN002', 'Dell XPS 13', '2025-04-17 15:42:57', 1, 1, 50, 2),
-(3, 'SN003', '9125001SN003', 'Lenovo ThinkPad X1', '2025-04-17 15:42:57', 2, 1, 50, 5),
-(4, 'SN004', '9125001SN004', 'MacBook Pro 16\"', '2025-04-17 15:42:57', 1, 1, 50, 3),
-(5, 'SN005', '9125001SN005', 'Acer Swift 3', '2025-04-17 15:42:57', 2, 1, 50, 5),
-(6, 'SN006', '9125002SN006', 'Cámara Sony AX53', '2025-04-17 15:43:57', 1, 2, 50, 2),
-(7, 'SN007', '9125002SN007', 'Proyector Epson 4K', '2025-04-17 15:43:57', 2, 2, 50, 3),
-(8, 'SN008', '9125002SN008', 'Trípode Manfrotto', '2025-04-17 15:43:57', 1, 2, 50, 5),
-(9, 'SN009', '9125002SN009', 'Grabadora Panasonic', '2025-04-17 15:43:57', 2, 2, 50, 5),
-(10, 'SN010', '9125002SN010', 'Lente Canon 24-70mm', '2025-04-17 15:43:57', 1, 2, 50, 5),
-(11, 'SN011', '9125003SN011', 'Micrófono Shure SM58', '2025-04-17 15:43:57', 1, 3, 50, 3),
-(12, 'SN012', '9125003SN012', 'Altavoz Bose S1 Pro', '2025-04-17 15:43:57', 2, 3, 50, 5),
-(13, 'SN013', '9125003SN013', 'Mezcladora Yamaha MG10', '2025-04-17 15:43:57', 1, 3, 50, 5),
-(14, 'SN014', '9125003SN014', 'Audífonos Sennheiser HD', '2025-04-17 15:43:57', 2, 3, 50, 5),
-(15, 'SN015', '9125003SN015', 'Interface Audio Focusrite', '2025-04-17 15:43:57', 1, 3, 50, 5),
-(16, 'SN016', '9125004SN016', 'HDMI 2.1 3m', '2025-04-17 15:43:57', 1, 4, 50, 5),
-(17, 'SN017', '9125004SN017', 'USB-C a Ethernet', '2025-04-17 15:43:57', 2, 4, 50, 5),
-(18, 'SN018', '9125004SN018', 'VGA 5m', '2025-04-17 15:43:57', 1, 4, 50, 5),
-(19, 'SN019', '9125004SN019', 'DisplayPort 2m', '2025-04-17 15:43:57', 2, 4, 50, 5),
-(20, 'SN020', '9125004SN020', 'Cable de Red CAT6', '2025-04-17 15:43:57', 1, 4, 50, 5),
-(21, 'SN021', '9125005SN021', 'Control Universal Logitech', '2025-04-17 15:43:57', 1, 5, 50, 5),
-(22, 'SN022', '9125005SN022', 'Control Sony TV', '2025-04-17 15:43:57', 2, 5, 50, 5),
-(23, 'SN023', '9125005SN023', 'Control Samsung Smart', '2025-04-17 15:43:57', 1, 5, 50, 5),
-(24, 'SN024', '9125005SN024', 'Control LG Magic', '2025-04-17 15:43:57', 2, 5, 50, 5),
-(25, 'SN025', '9125005SN025', 'Control Philips HDMI', '2025-04-17 15:43:57', 1, 5, 50, 5),
-(26, 'SN026', '9125001SN026', 'HP ProBook 450', '2025-04-17 15:43:57', 2, 1, 50, 5),
-(27, 'SN027', '9125002SN027', 'Cámara Canon XA11', '2025-04-17 15:43:57', 1, 2, 50, 3),
-(28, 'SN028', '9125003SN028', 'Micrófono Rode NT-USB', '2025-04-17 15:43:57', 2, 3, 50, 5),
-(29, 'SN029', '9125004SN029', 'HDMI 1.4 5m', '2025-04-17 15:43:57', 1, 4, 50, 5),
-(30, 'SN030', '9125005SN030', 'Control Panasonic TV', '2025-04-17 15:43:57', 2, 5, 50, 5),
-(31, 'SN031', '9125001SN031', 'Dell Latitude 5420', '2025-04-17 15:46:40', 1, 1, 50, 3),
-(32, 'SN032', '9125002SN032', 'Cámara Panasonic HC-X1500', '2025-04-17 15:46:40', 2, 2, 50, 5),
-(33, 'SN033', '9125003SN033', 'Altavoz JBL EON 615', '2025-04-17 15:46:40', 1, 3, 50, 5),
-(34, 'SN034', '9125004SN034', 'Cable USB 3.0 2m', '2025-04-17 15:46:40', 2, 4, 50, 5),
-(35, 'SN035', '9125005SN035', 'Control Sony Blu-ray', '2025-04-17 15:46:40', 1, 5, 50, 5),
-(36, 'SN036', '9125001SN036', 'MacBook Air M2', '2025-04-17 15:46:40', 2, 1, 50, 5),
-(37, 'SN037', '9125002SN037', 'Trípode Gitzo GT3543', '2025-04-17 15:46:40', 1, 2, 50, 5),
-(38, 'SN038', '9125003SN038', 'Micrófono Audio-Technica AT2020', '2025-04-17 15:46:40', 2, 3, 50, 5),
-(39, 'SN039', '9125004SN039', 'Cable Optical Toslink 5m', '2025-04-17 15:46:40', 1, 4, 50, 5),
-(40, 'SN040', '9125005SN040', 'Control LG Smart TV', '2025-04-17 15:46:40', 2, 5, 50, 5),
-(41, 'SN041', '9125001SN041', 'Lenovo Yoga 920', '2025-04-17 15:46:40', 1, 1, 50, 5),
-(42, 'SN042', '9125002SN042', 'Proyector BenQ HT3550', '2025-04-17 15:46:40', 2, 2, 50, 3),
-(43, 'SN043', '9125003SN043', 'Interface Audio PreSonus 24c', '2025-04-17 15:46:40', 1, 3, 50, 5),
-(44, 'SN044', '9125004SN044', 'Cable HDMI ARC 4m', '2025-04-17 15:46:40', 2, 4, 50, 5),
-(45, 'SN045', '9125005SN045', 'Control Roku Ultra', '2025-04-17 15:46:40', 1, 5, 50, 5),
-(46, 'SN046', '9125001SN046', 'Asus ZenBook 14', '2025-04-17 15:46:40', 2, 1, 50, 5),
-(47, 'SN047', '9125002SN047', 'Grabadora Zoom H6', '2025-04-17 15:46:40', 1, 2, 50, 5),
-(48, 'SN048', '9125003SN048', 'Audífonos Audio-Technica M50x', '2025-04-17 15:46:40', 2, 3, 50, 5),
-(49, 'SN049', '9125004SN049', 'Cable VGA 3m con Conectores Dorados', '2025-04-17 15:46:40', 1, 4, 50, 5),
-(50, 'SN050', '9125005SN050', 'Control Amazon Fire TV', '2025-04-17 15:46:40', 2, 5, 50, 5),
+(1, 'SN001', '9125001SN001', 'HP EliteBook 7777', '2025-04-17 15:42:57', 4, 2, 55, 3),
+(2, 'SN002', '9125001SN002', 'Dell XPS 13', '2025-04-17 15:42:57', 4, 1, 55, 2),
+(3, 'SN003', '9125001SN003', 'Lenovo ThinkPad X1', '2025-04-17 15:42:57', 4, 1, 55, 5),
+(4, 'SN004', '9125001SN004', 'MacBook Pro 16\"', '2025-04-17 15:42:57', 3, 1, 50, 3),
+(5, 'SN005', '9125001SN005', 'Acer Swift 3', '2025-04-17 15:42:57', 4, 1, 50, 5),
+(6, 'SN006', '9125002SN006', 'Cámara Sony AX53', '2025-04-17 15:43:57', 4, 2, 50, 2),
+(7, 'SN007', '9125002SN007', 'Proyector Epson 4K', '2025-04-17 15:43:57', 4, 2, 50, 3),
+(8, 'SN008', '9125002SN008', 'Trípode Manfrotto', '2025-04-17 15:43:57', 4, 2, 50, 5),
+(9, 'SN009', '9125002SN009', 'Grabadora Panasonic', '2025-04-17 15:43:57', 4, 2, 50, 5),
+(10, 'SN010', '9125002SN010', 'Lente Canon 24-70mm', '2025-04-17 15:43:57', 4, 2, 50, 5),
+(11, 'SN011', '9125003SN011', 'Micrófono Shure SM58', '2025-04-17 15:43:57', 4, 3, 50, 3),
+(12, 'SN012', '9125003SN012', 'Altavoz Bose S1 Pro', '2025-04-17 15:43:57', 4, 3, 50, 5),
+(13, 'SN013', '9125003SN013', 'Mezcladora Yamaha MG10', '2025-04-17 15:43:57', 4, 3, 50, 5),
+(14, 'SN014', '9125003SN014', 'Audífonos Sennheiser HD', '2025-04-17 15:43:57', 4, 3, 50, 5),
+(15, 'SN015', '9125003SN015', 'Interface Audio Focusrite', '2025-04-17 15:43:57', 4, 3, 50, 5),
+(16, 'SN016', '9125004SN016', 'HDMI 2.1 3m', '2025-04-17 15:43:57', 4, 4, 50, 5),
+(17, 'SN017', '9125004SN017', 'USB-C a Ethernet', '2025-04-17 15:43:57', 4, 4, 50, 5),
+(18, 'SN018', '9125004SN018', 'VGA 5m', '2025-04-17 15:43:57', 4, 4, 50, 5),
+(19, 'SN019', '9125004SN019', 'DisplayPort 2m', '2025-04-17 15:43:57', 4, 4, 50, 5),
+(20, 'SN020', '9125004SN020', 'Cable de Red CAT6', '2025-04-17 15:43:57', 4, 4, 50, 5),
+(21, 'SN021', '9125005SN021', 'Control Universal Logitech', '2025-04-17 15:43:57', 4, 5, 50, 5),
+(22, 'SN022', '9125005SN022', 'Control Sony TV', '2025-04-17 15:43:57', 4, 5, 50, 5),
+(23, 'SN023', '9125005SN023', 'Control Samsung Smart', '2025-04-17 15:43:57', 4, 5, 50, 5),
+(24, 'SN024', '9125005SN024', 'Control LG Magic', '2025-04-17 15:43:57', 4, 5, 50, 5),
+(25, 'SN025', '9125005SN025', 'Control Philips HDMI', '2025-04-17 15:43:57', 4, 5, 50, 5),
+(26, 'SN026', '9125001SN026', 'HP ProBook 450', '2025-04-17 15:43:57', 4, 1, 50, 5),
+(27, 'SN027', '9125002SN027', 'Cámara Canon XA11', '2025-04-17 15:43:57', 4, 2, 50, 3),
+(28, 'SN028', '9125003SN028', 'Micrófono Rode NT-USB', '2025-04-17 15:43:57', 4, 3, 50, 5),
+(29, 'SN029', '9125004SN029', 'HDMI 1.4 5m', '2025-04-17 15:43:57', 4, 4, 50, 5),
+(30, 'SN030', '9125005SN030', 'Control Panasonic TV', '2025-04-17 15:43:57', 4, 5, 50, 5),
+(31, 'SN031', '9125001SN031', 'Dell Latitude 5420', '2025-04-17 15:46:40', 4, 1, 50, 3),
+(32, 'SN032', '9125002SN032', 'Cámara Panasonic HC-X1500', '2025-04-17 15:46:40', 4, 2, 50, 5),
+(33, 'SN033', '9125003SN033', 'Altavoz JBL EON 615', '2025-04-17 15:46:40', 4, 3, 50, 5),
+(34, 'SN034', '9125004SN034', 'Cable USB 3.0 2m', '2025-04-17 15:46:40', 4, 4, 50, 5),
+(35, 'SN035', '9125005SN035', 'Control Sony Blu-ray', '2025-04-17 15:46:40', 4, 5, 50, 5),
+(36, 'SN036', '9125001SN036', 'MacBook Air M2', '2025-04-17 15:46:40', 4, 1, 50, 5),
+(37, 'SN037', '9125002SN037', 'Trípode Gitzo GT3543', '2025-04-17 15:46:40', 4, 2, 50, 5),
+(38, 'SN038', '9125003SN038', 'Micrófono Audio-Technica AT2020', '2025-04-17 15:46:40', 4, 3, 50, 5),
+(39, 'SN039', '9125004SN039', 'Cable Optical Toslink 5m', '2025-04-17 15:46:40', 4, 4, 50, 5),
+(40, 'SN040', '9125005SN040', 'Control LG Smart TV', '2025-04-17 15:46:40', 4, 5, 50, 5),
+(41, 'SN041', '9125001SN041', 'Lenovo Yoga 920', '2025-04-17 15:46:40', 4, 1, 50, 5),
+(42, 'SN042', '9125002SN042', 'Proyector BenQ HT3550', '2025-04-17 15:46:40', 4, 2, 50, 3),
+(43, 'SN043', '9125003SN043', 'Interface Audio PreSonus 24c', '2025-04-17 15:46:40', 4, 3, 50, 5),
+(44, 'SN044', '9125004SN044', 'Cable HDMI ARC 4m', '2025-04-17 15:46:40', 4, 4, 50, 5),
+(45, 'SN045', '9125005SN045', 'Control Roku Ultra', '2025-04-17 15:46:40', 4, 5, 50, 5),
+(46, 'SN046', '9125001SN046', 'Asus ZenBook 14', '2025-04-17 15:46:40', 4, 1, 50, 5),
+(47, 'SN047', '9125002SN047', 'Grabadora Zoom H6', '2025-04-17 15:46:40', 4, 2, 50, 5),
+(48, 'SN048', '9125003SN048', 'Audífonos Audio-Technica M50x', '2025-04-17 15:46:40', 4, 3, 50, 5),
+(49, 'SN049', '9125004SN049', 'Cable VGA 3m con Conectores Dorados', '2025-04-17 15:46:40', 4, 4, 50, 5),
+(50, 'SN050', '9125005SN050', 'Control Amazon Fire TV', '2025-04-17 15:46:40', 4, 5, 50, 5),
 (51, 'SN051', '9125001SN051', 'Dell Latitude 5430', '2025-04-20 19:53:29', 1, 1, 55, 1),
-(52, 'SN052', '9125001SN052', 'HP EliteBook 850 G8', '2025-04-20 19:53:29', 2, 1, 43, 1),
+(52, 'SN052', '9125001SN052', 'HP EliteBook 850 G8', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (53, 'SN053', '9125001SN053', 'Lenovo ThinkBook 14 G2', '2025-04-20 19:53:29', 1, 1, 57, 1),
 (54, 'SN054', '9125001SN054', 'Asus VivoBook S14', '2025-04-20 19:53:29', 2, 1, 55, 1),
 (55, 'SN055', '9125001SN055', 'Acer TravelMate P2', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (56, 'SN056', '9125001SN056', 'Microsoft Surface Laptop 5', '2025-04-20 19:53:29', 2, 1, 57, 1),
 (57, 'SN057', '9125001SN057', 'Apple MacBook Pro M3', '2025-04-20 19:53:29', 1, 1, 55, 1),
-(58, 'SN058', '9125001SN058', 'Samsung Galaxy Book3 Pro', '2025-04-20 19:53:29', 2, 1, 43, 1),
+(58, 'SN058', '9125001SN058', 'Samsung Galaxy Book3 Pro', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (59, 'SN059', '9125001SN059', 'LG Gram 17', '2025-04-20 19:53:29', 1, 1, 57, 1),
 (60, 'SN060', '9125001SN060', 'Toshiba Dynabook Satellite Pro', '2025-04-20 19:53:29', 2, 1, 55, 1),
 (61, 'SN061', '9125001SN061', 'MSI Modern 14 B11', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (62, 'SN062', '9125001SN062', 'Huawei MateBook D15', '2025-04-20 19:53:29', 2, 1, 57, 1),
 (63, 'SN063', '9125001SN063', 'Chuwi HeroBook Pro', '2025-04-20 19:53:29', 1, 1, 55, 1),
-(64, 'SN064', '9125001SN064', 'Gateway Ultra Slim Notebook', '2025-04-20 19:53:29', 2, 1, 43, 1),
+(64, 'SN064', '9125001SN064', 'Gateway Ultra Slim Notebook', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (65, 'SN065', '9125001SN065', 'VAIO SX14', '2025-04-20 19:53:29', 1, 1, 57, 1),
 (66, 'SN066', '9125001SN066', 'Alienware x14 R2', '2025-04-20 19:53:29', 2, 1, 55, 1),
 (67, 'SN067', '9125001SN067', 'Razer Blade Stealth 13', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (68, 'SN068', '9125001SN068', 'Fujitsu Lifebook U7411', '2025-04-20 19:53:29', 2, 1, 57, 1),
 (69, 'SN069', '9125001SN069', 'Panasonic Toughbook 55', '2025-04-20 19:53:29', 1, 1, 55, 1),
-(70, 'SN070', '9125001SN070', 'HP Pavilion x360', '2025-04-20 19:53:29', 2, 1, 43, 1),
+(70, 'SN070', '9125001SN070', 'HP Pavilion x360', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (71, 'SN071', '9125001SN071', 'Lenovo IdeaPad Flex 5', '2025-04-20 19:53:29', 1, 1, 57, 1),
 (72, 'SN072', '9125001SN072', 'Dell XPS 13 Plus', '2025-04-20 19:53:29', 2, 1, 55, 1),
 (73, 'SN073', '9125001SN073', 'Asus ROG Zephyrus G14', '2025-04-20 19:53:29', 1, 1, 43, 1),
 (74, 'SN074', '9125001SN074', 'Acer Aspire 7', '2025-04-20 19:53:29', 2, 1, 57, 1),
-(75, 'SN075', '9125001SN075', 'Samsung Notebook 9 Pro', '2025-04-20 19:53:29', 1, 1, 55, 1);
+(75, 'SN075', '9125001SN075', 'Samsung Notebook 9 Pro', '2025-04-20 19:53:29', 1, 1, 55, 1),
+(76, '11111', 'abcd12345', 'descripcion 123', '2025-05-15 16:39:45', 1, 3, 55, NULL),
+(77, '22222', 'abcd6789', 'descripcion456', '2025-05-15 16:41:32', 1, 3, 55, 1),
+(78, '7777', '7777', 'equipo prueba', '2025-05-16 16:09:39', 1, 1, 48, 1),
+(79, '55667788', '88776655', 'Equipo ASUS xt', '2025-05-16 16:46:37', 1, 2, 1, 2),
+(80, '1111', '11334', 'asdas', '2025-05-18 00:12:33', 1, 1, 48, 1),
+(81, '1231s1', 'xasxa', 'hola mundo', '2025-05-18 00:13:05', 4, 2, 56, 1),
+(82, '890', '76584', 'adios mundo', '2025-05-18 00:15:56', 1, 1, 52, 1),
+(83, 'asad', 'asada123', 'aasdfghj', '2025-05-18 21:43:42', 1, 1, 46, 3),
+(84, 'aaaabcdefg12345', '12345aacdc', 'metalica', '2025-05-18 21:47:59', 1, 1, 46, 1),
+(85, '1q2w3e4r5t', '6y7u8i9o0p', 'Equipo asus hacker', '2025-05-19 06:09:11', 1, 1, 46, 1),
+(86, '1a2s3d4f', 'v0c9x8z7', 'Equipo poderoso', '2025-05-19 06:55:48', 1, 1, 52, 1),
+(87, 'z12x3c4v', 'm098b7v', 'equipo molon que mola mogollon', '2025-05-19 07:17:50', 1, 1, 53, 1),
+(88, 'zq1xw2ce3', 'fr12gt23', 'Hola mundo', '2025-05-19 08:20:00', 1, 1, 43, 1),
+(89, 'q1q1w2w2e3', 'da4da67a6', 'equipo mañitp', '2025-05-19 08:25:34', 4, 1, 53, 1);
 
 -- --------------------------------------------------------
 
@@ -594,6 +609,7 @@ CREATE TABLE `usuarios` (
   `telefono` varchar(20) DEFAULT NULL,
   `direccion` varchar(100) DEFAULT NULL,
   `genero` int(11) DEFAULT 3,
+  `foto` varchar(100) DEFAULT NULL,
   `estado` enum('activo','inactivo') DEFAULT 'activo',
   `fecha_registro` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -602,30 +618,31 @@ CREATE TABLE `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `tipo_documento`, `numero_documento`, `nombre`, `apellido`, `correo_electronico`, `nombre_usuario`, `clave`, `telefono`, `direccion`, `genero`, `estado`, `fecha_registro`) VALUES
-(1, 'CC', '1', 'Admin', 'Sistema', 'admin@sistema.com', 'admin', 'clave123', NULL, NULL, 3, 'activo', '2025-03-22 16:35:28'),
-(42, 'CC', '1023456789', 'Juan', 'Pérez', 'juan.perez@email.com', 'juanperez1', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(43, 'TI', '1234567', 'María', 'Gómez', 'maria.gomez@email.com', 'mariagomez2', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(44, 'CC', '1098765432', 'Carlos', 'López', 'carlos.lopez@email.com', 'carloslopez3', 'clave123', NULL, NULL, 3, 'inactivo', '2025-04-02 03:29:02'),
-(45, 'TI', '7654321', 'Ana', 'Martínez', 'ana.martinez@email.com', 'anamartinez4', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(46, 'CC', '1002345678', 'Pedro', 'Sánchez', 'pedro.sanchez@email.com', 'pedrosanchez5', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(47, 'TI', '1122334', 'Laura', 'Fernández', 'laura.fernandez@email.com', 'laurafernandez6', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(48, 'CC', '1034567890', 'Luis', 'Torres', 'luis.torres@email.com', 'luistorres7', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(49, 'TI', '2233445', 'Sofía', 'Ramírez', 'sofia.ramirez@email.com', 'sofiaramirez8', 'clave123', NULL, NULL, 3, 'inactivo', '2025-04-02 03:29:02'),
-(50, 'CC', '1045678901', 'Andrés', 'Vargas', 'andres.vargas@email.com', 'andresvargas9', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(51, 'TI', '3344556', 'Elena', 'Hernández', 'elena.hernandez@email.com', 'elenahernandez10', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(52, 'CC', '1056789012', 'Gabriel', 'Castro', 'gabriel.castro@email.com', 'gabrielcastro11', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(53, 'TI', '4455667', 'Paula', 'Ortega', 'paula.ortega@email.com', 'paulaortega12', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(54, 'CC', '1067890123', 'Ricardo', 'Molina', 'ricardo.molina@email.com', 'ricardomolina13', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(55, 'TI', '5566778', 'Fernanda', 'Ruiz', 'fernanda.ruiz@email.com', 'fernandaruiz14', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(56, 'CC', '1078901234', 'Hugo', 'Silva', 'hugo.silva@email.com', 'hugosilva15', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(57, 'TI', '6677889', 'Isabel', 'Jiménez', 'isabel.jimenez@email.com', 'isabeljimenez16', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(58, 'CC', '1089012345', 'José', 'Morales', 'jose.morales@email.com', 'josemorales17', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(59, 'TI', '7788990', 'Natalia', 'Paredes', 'natalia.paredes@email.com', 'nataliaparedes18', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(60, 'CC', '1090123456', 'Emilio', 'Guzmán', 'emilio.guzman@email.com', 'emilioguzman19', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(61, 'TI', '8899001', 'Valeria', 'Díaz', 'valeria.diaz@email.com', 'valeriadiaz20', 'clave123', NULL, NULL, 3, 'activo', '2025-04-02 03:29:02'),
-(71, 'CC', '75', 'German', 'Ramirez', 'test@example.us', '75', '75', '6019521325', 'calle 20 33a42', 2, 'activo', '2025-04-04 16:00:40'),
-(72, 'CC', '1116', 'Alonso', 'Arboleda', 'teste@exemplo.us', '1116', '1116', '315', 'calle 20 33a42', 2, 'activo', '2025-04-04 16:16:32');
+INSERT INTO `usuarios` (`id_usuario`, `tipo_documento`, `numero_documento`, `nombre`, `apellido`, `correo_electronico`, `nombre_usuario`, `clave`, `telefono`, `direccion`, `genero`, `foto`, `estado`, `fecha_registro`) VALUES
+(1, 'CC', '1', 'Admin', 'Sistema', 'admin@sistema.com', 'admin', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', '1234567', 'cra 23#27-12 escobar', 2, 'vistas/img/usuarios/1/847.jpg', 'activo', '2025-03-22 16:35:28'),
+(42, 'CC', '1023456789', 'Juan', 'Pérez', 'juan.perez@email.com', 'juanperez1', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', '31112344', 'cra 34', 0, 'vistas/img/usuarios/1023456789/478.jpg', 'activo', '2025-04-02 03:29:02'),
+(43, 'TI', '1234567', 'María', 'Gómez', 'maria.gomez@email.com', 'mariagomez2', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(44, 'CC', '1098765432', 'Carlos', 'López', 'carlos.lopez@email.com', 'carloslopez3', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'inactivo', '2025-04-02 03:29:02'),
+(45, 'TI', '7654321', 'Ana', 'Martínez', 'ana.martinez@email.com', 'anamartinez4', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(46, 'CC', '1002345678', 'Pedro', 'Sánchez', 'pedro.sanchez@email.com', 'pedrosanchez5', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(47, 'TI', '1122334', 'Laura', 'Fernández', 'laura.fernandez@email.com', 'laurafernandez6', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(48, 'CC', '1034567890', 'Luis', 'Torres', 'luis.torres@email.com', 'luistorres7', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(49, 'TI', '2233445', 'Sofía', 'Ramírez', 'sofia.ramirez@email.com', 'sofiaramirez8', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'inactivo', '2025-04-02 03:29:02'),
+(50, 'CC', '1045678901', 'Andrés', 'Vargas', 'andres.vargas@email.com', 'andresvargas9', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(51, 'TI', '3344556', 'Elena', 'Hernández', 'elena.hernandez@email.com', 'elenahernandez10', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(52, 'CC', '1056789012', 'Gabriel', 'Castro', 'gabriel.castro@email.com', 'gabrielcastro11', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(53, 'TI', '4455667', 'Paula', 'Ortega', 'paula.ortega@email.com', 'paulaortega12', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(54, 'CC', '1067890123', 'Ricardo', 'Molina', 'ricardo.molina@email.com', 'ricardomolina13', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(55, 'TI', '5566778', 'Fernanda', 'Ruiz', 'fernanda.ruiz@email.com', 'fernandaruiz14', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(56, 'CC', '1078901234', 'Hugo', 'Silva', 'hugo.silva@email.com', 'hugosilva15', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(57, 'TI', '6677889', 'Isabel', 'Jiménez', 'isabel.jimenez@email.com', 'isabeljimenez16', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(58, 'CC', '1089012345', 'José', 'Morales', 'jose.morales@email.com', 'josemorales17', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(59, 'TI', '7788990', 'Natalia', 'Paredes', 'natalia.paredes@email.com', 'nataliaparedes18', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(60, 'CC', '1090123456', 'Emilio', 'Guzmán', 'emilio.guzman@email.com', 'emilioguzman19', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(61, 'TI', '8899001', 'Valeria', 'Díaz', 'valeria.diaz@email.com', 'valeriadiaz20', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', NULL, NULL, 3, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-02 03:29:02'),
+(71, 'CC', '75', 'German', 'Ramirez', 'test@example.us', '75', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', '6019521325', 'calle 20 33a42', 2, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-04 16:00:40'),
+(72, 'CC', '1116', 'Alonso', 'Arboleda', 'teste@exemplo.us', '1116', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', '315', 'calle 20 33a42', 2, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-04-04 16:16:32'),
+(73, 'CC', '11223344', 'asda', 'Sinisterra', 'dasdas@gmail.com', '11223344', '$2a$07$asxx54ahjppf45sd87a5auPSL9GB5Ad5sH/D3rUMKo4UJe4U/qGLO', '311233445', 'cra 23#23-10', 2, 'vistas/img/usuarios/default/anonymous.png', 'activo', '2025-05-15 15:59:20');
 
 -- --------------------------------------------------------
 
@@ -645,7 +662,7 @@ CREATE TABLE `usuario_rol` (
 
 INSERT INTO `usuario_rol` (`id_usuario`, `id_rol`, `fecha_asignacion`) VALUES
 (1, 9, '2025-03-22 16:35:28'),
-(42, 2, '2025-04-04 17:26:54'),
+(42, 3, '2025-04-04 17:26:54'),
 (43, 5, '2025-04-04 17:26:54'),
 (44, 6, '2025-04-04 17:26:54'),
 (45, 8, '2025-04-04 17:26:54'),
@@ -665,7 +682,8 @@ INSERT INTO `usuario_rol` (`id_usuario`, `id_rol`, `fecha_asignacion`) VALUES
 (59, 10, '2025-04-04 17:26:54'),
 (60, 6, '2025-04-04 17:26:54'),
 (71, 7, '2025-04-04 16:00:40'),
-(72, 6, '2025-04-04 16:16:32');
+(72, 6, '2025-04-04 16:16:32'),
+(73, 6, '2025-05-15 15:59:20');
 
 --
 -- Índices para tablas volcadas
@@ -800,7 +818,7 @@ ALTER TABLE `usuario_rol`
 -- AUTO_INCREMENT de la tabla `aprendices_ficha`
 --
 ALTER TABLE `aprendices_ficha`
-  MODIFY `id_aprendiz_ficha` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_aprendiz_ficha` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -818,7 +836,7 @@ ALTER TABLE `detalle_prestamo`
 -- AUTO_INCREMENT de la tabla `equipos`
 --
 ALTER TABLE `equipos`
-  MODIFY `equipo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `equipo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT de la tabla `estados`
@@ -878,7 +896,7 @@ ALTER TABLE `ubicaciones`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- Restricciones para tablas volcadas

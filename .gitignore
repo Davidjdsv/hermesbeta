@@ -1,8 +1,6 @@
 # Template
 AdminLTE/
-
-.project/
-.vscode/
+modelos/conexion.php
 
 # .htaccess
 .htaccess
@@ -78,17 +76,7 @@ bower_components/
 
 # ETC
 TODO
-test.html
-.htaccess
-ad.js
-/.cache/
-/modelos/conexion.php
-vistas/img/
-vistas/img/about.txt
-vistas/img/android-chrome-192x192.png
-vistas/img/apple-touch-icon.png
-vistas/img/favicon-16x16.png
-vistas/img/favicon-32x32.png
-vistas/img/favicon.ico
-vistas/img/H_Hermes_logo.png
-vistas/img/site.webmanifest
+test*.*
+
+
+

@@ -85,11 +85,14 @@ class ModeloEquipos{
                                                 us.nombre,
                                                 us.numero_documento,
                                                 ub.nombre as ubicacion_nombre,
-                                                ur.id_rol
+                                                ur.id_rol,
+                                                r.nombre_rol,
+                                                CONCAT_WS(' ',us.nombre,us.apellido) AS cuentadante_nombre
                                                 FROM $tabla e
                                                 LEFT JOIN usuarios us ON e.cuentadante_id = us.id_usuario
                                                 LEFT JOIN ubicaciones ub ON e.ubicacion_id = ub.ubicacion_id
                                                 LEFT JOIN usuario_rol ur ON us.id_usuario = ur.id_usuario
+                                                LEFT JOIN roles r ON ur.id_rol = r.id_rol
                                                 WHERE $item = :$item;");
             if ($item == "equipo_id") {
                 $stmt1->bindParam(":" . $item, $valor, PDO::PARAM_INT);
@@ -118,6 +121,7 @@ class ModeloEquipos{
                                                 us.id_usuario,
                                                 e.equipo_id,
                                                 ro.nombre_rol,
+                                                CONCAT_WS(' ',us.nombre,us.apellido) AS cuentadante_nombre_completo,
                                                 ub.nombre AS ubicacion_nombre
                                             FROM 
                                                 $tabla us

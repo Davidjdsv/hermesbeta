@@ -83,7 +83,7 @@ $(document).on("click", ".btnTraspasarEquipo", function(){
                     
                     // Llenamos los campos del formulario del modal con los datos recibidos
                     $("#idEditEquipo").val(respuesta["equipo_id"]);
-                    $("#cuentadanteOrigenTraspaso").val(respuesta["nombre"]);
+                    $("#cuentadanteOrigenTraspaso").val(respuesta["cuentadante_nombre"] + " (" + respuesta["nombre_rol"] + ")");
                     $("#ubicacionOrigenTraspaso").val(respuesta["ubicacion_nombre"]);
                 } else {
                     console.error("Respuesta inválida del servidor");
@@ -159,7 +159,7 @@ $(document).on("click", ".btnBuscarCuentadante", function (event){
                     $("#idTraspasoEquipo").val(idEquipoTraspaso);
                     console.log("ESTE ES EL EQUIPO ID AL CUAL VOY A PASAR: ", idEquipoTraspaso);
                     $("#cuentadanteDestinoId").val(resultado["id_usuario"]);
-                    $("#cuentadanteDestino").val(resultado["id_usuario"] + " " + resultado["cuentadante_nombre"]);
+                    $("#cuentadanteDestino").val(resultado["cuentadante_nombre_completo"] + " (" + resultado["nombre_rol"] + ")");
                     // $("#ubicacionTraspaso").val(resultado["ubicacion_id"] + " " + resultado["ubicacion_nombre"]);
                 }
             }

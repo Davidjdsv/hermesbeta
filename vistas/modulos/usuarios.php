@@ -62,6 +62,7 @@
               <!-- Solo si es estudiante -->
               <th>Estado</th>
               <!-- <th>Ultimo Acceso</th> -->
+              <th>Condición</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -90,14 +91,25 @@
             } else {
               echo '<button class="btn btn-danger btn-xs btnActivarUsuario" data-id="' . $usuario["id_usuario"] . '" data-estado="activo">Inactivo</button>';
             }
+            echo '</td>';
+            echo '<td>';
+            if ($usuario["condicion"] == "en_regla") {
+            echo '<button class="btn btn-success btn-xs btnCambiarCondicionUsuario" idUsuario="' . $usuario["id_usuario"] . '" condicionUsuario="advertido">En regla</button>';
+            } 
+            elseif ($usuario["condicion"] == "advertido") {
+            echo '<button class="btn btn-warning btn-xs btnCambiarCondicionUsuario" idUsuario="' . $usuario["id_usuario"] . '" condicionUsuario="penalizado">Advertido</button>';
+            } 
+            elseif ($usuario["condicion"] == "penalizado") {
+            echo '<button class="btn btn-danger btn-xs btnCambiarCondicionUsuario" idUsuario="' . $usuario["id_usuario"] . '" condicionUsuario="en_regla">Penalizado</button>';
+            } 
+            echo '</td>';
             echo '<td>
                   <div class="btn-group">
                     <button title="Consultar detalles de usuario" class="btn btn-default btn-xs btnConsultarUsuario" idUsuario="' . $usuario["id_usuario"] . '" data-toggle="modal" data-target="#modalConsularUsuario"><i class="fas fa-eye"></i></button>
 
                     <button title="Editar usuario" class="btn btn-default btn-xs btnEditarUsuario" idUsuario="' . $usuario["id_usuario"] . '" data-toggle="modal" data-target="#modalEditarUsuario"><i class="fas fa-edit"></i></button>
 
-                    <button title="Solicitudes del usuario" class="btn btn-default btn-xs btnSolicitudesUsuario" idUsuario="' . $usuario["id_usuario"] . '" data-toggle="modal" data-target="#modalSolicitudesUsuario"><i class="fas fa-laptop"></i></button>
-                    <button title="??" class="btn btn-default btn-xs btnSolicitudesUsuario" idUsuario="' . $usuario["id_usuario"] . '" data-toggle="modal" data-target="#modalSolicitudesUsuario"><i class="fas fa-file"></i></button>
+                    <button title="Solicitudes del usuario" class="btn btn-default btn-xs btnSolicitudesUsuario" idUsuario="' . $usuario["id_usuario"] . '" data-numero-documento="' . $usuario["numero_documento"] . '" data-toggle="modal" data-target="#modalSolicitudesUsuario"><i class="fas fa-laptop"></i></button>
                   </div>
                 </td>
                 </tr>';
@@ -128,6 +140,24 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+
+        <!-- row foto -->
+        <div class="row">
+          <div class="col-lg-12 text-center">
+            <?php
+              // Obtener la id del usuario a consultar
+              $idUsuario = isset($_POST['idConsultarUsuario']) ? $_POST['idConsultarUsuario'] : null;
+              $fotoUsuario = "vistas/img/usuarios/default/anonymous.png";
+              if ($idUsuario) {
+                $usuario = ControladorUsuarios::ctrMostrarUsuarios("id_usuario", $idUsuario);
+                if ($usuario && !empty($usuario["foto"])) {
+                  $fotoUsuario = $usuario["foto"];
+                }
+              }
+            ?>
+            <img src="<?php echo $fotoUsuario; ?>" class="img-thumbnail rounded-circle" alt="User Image" id="consultarFotoUsuario" style="width:150px; height:150px; object-fit:cover;">
+          </div>
         </div>
         
         <div class="modal-body">
@@ -275,139 +305,6 @@
   </div> <!-- modal  -->
 
   <!-- ============================================================================================================== -->
-
-  <!-- Modal Solicitudes Usuario -->
-  <div class="modal fade" id="modalSolicitudesUsuario">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Préstamos del Usuario</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="card card-success">
-            <div class="card-body">
-              <table class="table table-bordered table-striped" id="tblPrestamosUsuario">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Préstamo</th>
-                    <th>Fecha Inicio</th>
-                    <th>Fecha Fin</th>
-                    <th>Estado</th>
-                    <th>Motivo</th>
-                    <th>Acciones</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Maquetacion ejemplo datos ficticios -->
-                  <tr>
-                    <td>1</td>
-                    <td>Préstamo 001</td>
-                    <td>2024-06-01</td>
-                    <td>2024-06-05</td>
-                    <td><span class="badge badge-success">Activo</span></td>
-                    <td>Práctica laboratorio</td>
-                    <td>
-                      <button class="btn btn-default btn-xs btnVerDetallePrestamo" data-toggle="modal" data-target="#modalDetallePrestamo" title="Ver Detalle">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Préstamo 002</td>
-                    <td>2024-05-20</td>
-                    <td>2024-05-22</td>
-                    <td><span class="badge badge-secondary">Finalizado</span></td>
-                    <td>Examen</td>
-                    <td>
-                      <button class="btn btn-default btn-xs btnVerDetallePrestamo" data-toggle="modal" data-target="#modalDetallePrestamo" title="Ver Detalle">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                    </td>
-                  </tr>
-                  <!-- Fin ejemplo -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal Detalle Préstamo -->
-  <div class="modal fade" id="modalDetallePrestamo">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header bg-primary">
-          <h4 class="modal-title">Detalle del Préstamo</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-12">
-              <dl class="row">
-                <dt class="col-sm-4">Tipo de Préstamo:</dt>
-                <dd class="col-sm-8" id="detalleTipoPrestamo">Préstamo de equipos</dd>
-                <dt class="col-sm-4">Fecha Inicio:</dt>
-                <dd class="col-sm-8" id="detalleFechaInicio">2024-06-01</dd>
-                <dt class="col-sm-4">Fecha Fin:</dt>
-                <dd class="col-sm-8" id="detalleFechaFin">2024-06-05</dd>
-                <dt class="col-sm-4">Motivo:</dt>
-                <dd class="col-sm-8" id="detalleMotivo">Práctica laboratorio</dd>
-              </dl>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-bordered table-striped" id="tblDetalleElementos">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Categoría</th>
-                    <th>Equipo</th>
-                    <th>Serial/Placa</th>
-                    <th>Estado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Ejemplo de fila -->
-                  <tr>
-                    <td>101</td>
-                    <td>Portátil</td>
-                    <td>HP 240 G7</td>
-                    <td>SN123456</td>
-                    <td><span class="badge badge-success">Bueno</span></td>
-                  </tr>
-                  <tr>
-                    <td>102</td>
-                    <td>Proyector</td>
-                    <td>Epson X05</td>
-                    <td>PL654321</td>
-                    <td><span class="badge badge-success">Bueno</span></td>
-                  </tr>
-                  <!-- Fin ejemplo -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-<!-- ============================================================================================================== -->
 
   <!-- Modal para agregar usuario -->
   <div class="modal fade" id="modalRegistrarUsuario">
@@ -638,32 +535,16 @@
                   </div>
                 </div>
               </div>
-              <!--- row -->
-
-              <!-- row password  -->
-              <div class="form-group">
-                <div class="row">
-                  <div class="col-lg-12">
-                    <div class="input-group ">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text"><i class="fas fa-key"></i></span>
-                      </div>
-                      <input type="password" class="form-control" name="nuevoPassword" placeholder="Password" required>
-                    </div>
-                  </div>
-                </div>
-
               <!-- form group -->
               <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                 <button type="submit" class="btn btn-primary">Agregar</button>
               </div>
-              
 
               <?php
 
               // Include the PHP file for handling the form submission
-              $crearUsuario = new ControladorUsuarios() ;
+              $crearUsuario = new ControladorUsuarios();
               $crearUsuario->ctrCrearUsuario();
 
 
@@ -691,7 +572,12 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        
+        <!-- row foto -->
+        <div class="row">
+          <div class="col-lg-12 text-center mb-3">
+            <img src="vistas/img/usuarios/default/anonymous.png" class="img-thumbnail rounded-circle" alt="User Image" id="editFotoUsuario" style="width:150px; height:150px; object-fit:cover;">
+          </div>
+        </div>
         <div class="modal-body">
           <div class="box-body">
 
