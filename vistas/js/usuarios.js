@@ -25,33 +25,58 @@ $(document).on("change", "#selectRol", function() {
 //************************************************************
 // script para cambiar los estados de los usuarios
 //************************************************************/
-$(document).on('click', '.btnActivarUsuario', function() {
+$(document).on('click', '.btnActivarUsuario', function () {
     var idUsuario = $(this).data('id');
     var nuevoEstado = $(this).data('estado');
     var boton = $(this);
 
+    // Desactivar el botón para evitar múltiples clics
+    boton.prop('disabled', true);
+
+    // Guardar el texto original y mostrar spinner
+    var textoOriginal = boton.html();
+    boton.html('<i class="fas fa-spinner fa-spin"></i>');
+
     $.ajax({
-    url: "ajax/usuarios.ajax.php",
-    method: "POST",
-    data: {
-        idUsuarioEstado: idUsuario,
-        estado: nuevoEstado
-    },
-    success: function(respuesta) {
-        console.log("Respuesta:", respuesta);
-        if (respuesta.trim() === "ok") {
-            Swal.fire("Éxito", "Estado actualizado", "success").then(() => {
-                location.reload();
-            });
-        } else {
-            Swal.fire("Error", "No se pudo cambiar el estado", "error");
+        url: "ajax/usuarios.ajax.php",
+        method: "POST",
+        data: {
+            idUsuarioEstado: idUsuario,
+            estado: nuevoEstado
+        },
+        success: function (respuesta) {
+            if (respuesta.trim() === "ok") {
+                Swal.fire("Éxito", "Estado actualizado", "success");
+
+                // Actualizar visualmente el botón sin recargar
+                if (nuevoEstado === "activo") {
+                    boton
+                        .removeClass('btn-danger')
+                        .addClass('btn-success')
+                        .text('Activo')
+                        .data('estado', 'inactivo');
+                } else {
+                    boton
+                        .removeClass('btn-success')
+                        .addClass('btn-danger')
+                        .text('Inactivo')
+                        .data('estado', 'activo');
+                }
+
+                boton.prop('disabled', false);
+
+            } else {
+                Swal.fire("Error", "No se pudo cambiar el estado", "error");
+                boton.prop('disabled', false).html(textoOriginal);
+            }
+        },
+        error: function () {
+            Swal.fire("Error", "Fallo de conexión con el servidor", "error");
+            boton.prop('disabled', false).html(textoOriginal);
         }
-    },
-    error: function() {
-        Swal.fire("Error", "Fallo de conexión con el servidor", "error");
-    }
+    });
 });
-});
+
 
 $(document).on("change", "#selectSede", function() {
     var idSede = $(this).val();

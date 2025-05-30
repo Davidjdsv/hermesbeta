@@ -65,4 +65,42 @@ input[type="number"] {
     -moz-appearance: textfield;
 }
 
+/* Estilos para el selector de foto de perfil
+
+/* Contenedor principal del selector de foto de perfil */
+.foto-perfil-container {
+    margin: 20px 0; /* Espaciado vertical alrededor del contenedor */
+}
+
+/* Oculta el input de tipo archivo para personalizar el botón */
+.foto-perfil-container input[type="file"] {
+    display: none;
+}
+
+/* Estilos para el botón personalizado de selección de foto */
+.btn-foto-perfil {
+    display: inline-flex; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 10px; 
+    border: 2px solid #007bff; 
+    border-radius: 5px; 
+    color: #007bff; 
+    cursor: pointer; 
+    transition: all 0.3s ease; 
+}
+
+/* Efecto visual al pasar el mouse sobre el botón */
+.btn-foto-perfil:hover {
+    background-color: #007bff; 
+    color: white; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+}
+
+/* Tamaño del ícono dentro del botón */
+.btn-foto-perfil i {
+    font-size: 24px;
+}
+
+
 

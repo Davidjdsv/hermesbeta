@@ -176,3 +176,22 @@ $(document).on("click", ".btnVerDetallePrestamo", function () {
     },
   });
 });
+//Historial de solicitudes
+$(document).ready(function() {
+    // Obtener cédula de la URL
+    let params = new URLSearchParams(window.location.search);
+    let cedula = params.get('cedula');
+    let tabla_prestamo = params.get('tabla_prestamo');
+    
+    if(cedula) {
+        // Colocar la cédula en el input
+        $("#cedulaUsuario").val(cedula);
+        // Simular click en el botón de búsqueda
+        $("#btnBuscarUsuarioConsultar").trigger('click');
+    }
+    if(tabla_prestamo) {
+        // Mostrar la tabla de préstamos
+        $("#resultados").fadeIn();
+        $("#tblPrestamosUsuario").fadeIn();
+    }
+});

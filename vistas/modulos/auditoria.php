@@ -1,7 +1,3 @@
-<?php
-// auditoria.php
-?>
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -40,11 +36,10 @@
                                         <th>Condición</th>
                                         <th>Fecha Registro</th>
                                         <th>Editado Por</th>
-                                        <th>Campos Modificados</th>
-                                        <th>Valores Anteriores</th>
-                                        <th>Valores Nuevos</th>
+                                        <th>Campo Modificado</th>
+                                        <th>Valor Anterior</th>
+                                        <th>Valor Nuevo</th>
                                         <th>Fecha Cambio</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -61,6 +56,6 @@
 </div>
 <!-- /.content-wrapper -->
 <!-- Tu archivo JS con la tabla y modal -->
-<script src="/hermesbeta/vistas/js/auditoria.js"></script>
+<!-- <script src="/hermesbeta/vistas/js/auditoria.js"></script> -->
 
 

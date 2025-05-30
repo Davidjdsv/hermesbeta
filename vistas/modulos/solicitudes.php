@@ -19,9 +19,9 @@
     <!-- Main content -->
     <section class="content">
 
-        <div class="container-fluid">
-            <!-- Info boxes -->
-            <div class="row">
+         <div class="container-fluid">
+              <!-- Info boxes -->
+              <div class="row">
 
                 <div class="col-lg-3 col-6">
                     <!-- small box -->
@@ -320,8 +320,9 @@
                     <div class="infoEquiposSolicitados d-none">
 
                         <div class="card">
-                            <button type="button" class="btn btn-primary btn-block" data-toggle="modal"
-                                data-target="#modalHistoricoSolicitudes">Historial</button>
+                            <button type="button" class="btn btn-primary btn-block btnHistorial" id="btnHistorial">
+                                <i class="fas fa-history"></i> Historial
+                            </button>
                         </div>
 
                     </div>

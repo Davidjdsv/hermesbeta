@@ -11,51 +11,54 @@ class ControladorEquipos{
         return $respuesta;
     }
 
-    public static function ctrAgregarEquipos(){
-        if (isset($_POST["numero_serie"]) && isset($_POST["etiqueta"]) && isset($_POST["descripcion"]) && isset($_POST["ubicacion_id"]) && isset($_POST["categoria_id"]) && isset($_POST["cuentadante_id"])) {
-            // Faltaban los preg match
-            if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["numero_serie"]) && preg_match('/^[a-zA-Z0-9]+$/', $_POST["etiqueta"]) && preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["descripcion"])) {
-                // Mostrar datos antes de enviarlos al modelo
+    public static function ctrAgregarEquipos() {
+        if (isset($_POST["numero_serie"]) && isset($_POST["etiqueta"]) && isset($_POST["descripcion"]) && isset($_POST["categoria_id"]) && isset($_POST["cuentadante_id"])) {
+    
+            // Validación de caracteres
+            if (preg_match('/^[a-zA-Z0-9]+$/', $_POST["numero_serie"]) &&
+                preg_match('/^[a-zA-Z0-9]+$/', $_POST["etiqueta"]) &&
+                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["descripcion"])) {
+    
+                // Definir los datos sin ubicación, cuentadante ni estado (se asignan en el modelo)
                 $tabla = "equipos";
                 $datos = array(
                     "numero_serie" => $_POST["numero_serie"],
+                    "cuentadante_id" => $_POST["cuentadante_id"],
                     "etiqueta" => $_POST["etiqueta"],
                     "descripcion" => $_POST["descripcion"],
-                    "ubicacion_id" => $_POST["ubicacion_id"],
-                    "categoria_id" => $_POST["categoria_id"],
-                    "cuentadante_id" => $_POST["cuentadante_id"],
-                    "id_estado" => $_POST["id_estado"]
+                    "categoria_id" => $_POST["categoria_id"] // Solo enviamos categoría, los demás valores se asignan en el modelo
                 );
-
+    
+                // Insertar datos en la base de datos
                 $respuesta = ModeloEquipos::mdlAgregarEquipos($tabla, $datos);
-                //var_dump($respuesta);
-
+    
                 if ($respuesta == "ok") {
                     echo '<script>Swal.fire({
-                    icon: "success",
-                    title: "¡Equipo agregado correctamente!",
-                    confirmButtonText: "Cerrar"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location = "inventario";
-                    }
-                });</script>';
+                        icon: "success",
+                        title: "¡Equipo agregado correctamente!",
+                        confirmButtonText: "Cerrar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location = "inventario";
+                        }
+                    });</script>';
                 } else {
                     echo '<script>Swal.fire({
-                    icon: "error",
-                    title: "¡Error al agregar el equipo!",
-                    confirmButtonText: "Cerrar"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location = "inventario";
-                    }
-                });</script>';
+                        icon: "error",
+                        title: "¡Error al agregar el equipo!",
+                        confirmButtonText: "Cerrar"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location = "inventario";
+                        }
+                    });</script>';
                 }
+    
             } else {
                 echo '<script>
                 Swal.fire({
                     icon: "error",
-                    title: "¡Error, carácteres ingresados no válidos!",
+                    title: "¡Error, caracteres ingresados no válidos!",
                     confirmButtonText: "Cerrar"
                 }).then((result) => {
                     if (result.isConfirmed) {
@@ -66,19 +69,20 @@ class ControladorEquipos{
             }
         }
     }
-    // End of ctrAgregarEquipos method
 
-    public static function ctrEditarEquipos(){
-        if (isset($_POST["idEditEquipo"]) && isset($_POST["etiquetaEdit"]) && isset($_POST["descripcionEdit"]) && isset($_POST["categoriaEditId"]) && isset($_POST["estadoEdit"])) {
+    public static function ctrEditarEquipos() {
+        if (isset($_POST["idEditEquipo"]) && isset($_POST["etiquetaEdit"]) && isset($_POST["descripcionEdit"]) && 
+            isset($_POST["categoriaEditId"]) && isset($_POST["estadoEdit"])) {
+            
             if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["etiquetaEdit"]) &&
-            preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["descripcionEdit"])){
+                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["descripcionEdit"])) {
+                
                 $tabla = "equipos";
                 $datos = array(
                     "equipo_id" => $_POST["idEditEquipo"],
-                    // "numeroSerieEdit" => $_POST["numeroSerieEdit"],
                     "etiquetaEdit" => $_POST["etiquetaEdit"],
                     "descripcionEdit" => $_POST["descripcionEdit"],
-                    "estadoEdit" => $_POST["estadoEdit"], //SE AGREGÓ ESTADO
+                    "estadoEdit" => $_POST["estadoEdit"],
                     "categoriaEdit" => $_POST["categoriaEditId"]
                 );
                 $respuesta = ModeloEquipos::mdlEditarEquipos($tabla, $datos);

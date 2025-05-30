@@ -51,7 +51,7 @@
                                                 <td>' . $prestamo["estado_prestamo"]. '</td>
                                                 <td>' . $prestamo["motivo"]. '</td>
                                                 <td>
-                                                    <button class="btn btn-primary btn-sm btnVerDetalle" data-id="'. $prestamo["id_prestamo"]. ' "data-toggle="modal" data-target="#modalMisDetalles"><i class="fa fa-eye"></i></button>
+                                                    <button class="btn btn-primary btn-sm btnVerDetalle" idPrestamo="'. $prestamo["id_prestamo"]. ' "data-toggle="modal" data-target="#modalMisDetalles"><i class="fa fa-eye"></i></button>
                                                 </td>
                                             </tr>';
                                     }
@@ -65,7 +65,7 @@
                                             <td>' . $prestamos["estado_prestamo"]. '</td>
                                             <td>' . $prestamos["motivo"]. '</td>
                                             <td>
-                                                <button class="btn btn-primary btn-sm btnVerMisDetalles" data-id="'. $prestamos["id_prestamo"]. '" data-toggle="modal" data-target="#modalMisDetalles"><i class="fa fa-eye"></i></button>
+                                                <button class="btn btn-primary btn-sm btnVerMisDetalles" idPrestamo="'. $prestamos["id_prestamo"]. '" data-toggle="modal" data-target="#modalMisDetalles"><i class="fa fa-eye"></i></button>
                                             </td>
                                         </tr>';
                                 }else {
@@ -91,7 +91,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary">
-                <h4 class="modal-title">Detalle del Préstamo #<span id="numeroPrestamo"></span></h4>
+                <h4 class="modal-title">Detalle del Préstamo #<span id="num eroPrestamo"></span></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -102,16 +102,16 @@
                         <dl class="row">
 
                             <dt class="col-sm-4">Estado:</dt>
-                            <dd class="col-sm-8" id="misDetalleTipoPrestamo"></dd>
+                            <dd class="col-sm-8" id="detalleTipoPrestamo"></dd>
 
                             <dt class="col-sm-4">Fecha Préstamo:</dt>
-                            <dd class="col-sm-8" id="misDetalleFechaInicio"></dd>
+                            <dd class="col-sm-8" id="detalleFechaInicio"></dd>
 
                             <dt class="col-sm-4">Fecha Devolución:</dt>
-                            <dd class="col-sm-8" id="misDetalleFechaFin"></dd>
+                            <dd class="col-sm-8" id="detalleFechaFin"></dd>
 
                             <dt class="col-sm-4">Motivo:</dt>
-                            <dd class="col-sm-8" id="misDetalleMotivoPrestamo"></dd>
+                            <dd class="col-sm-8" id="detalleMotivoPrestamo"></dd>
                         </dl>
                     </div>
                     <div class="col-md-12">
@@ -123,6 +123,7 @@
                                 <table class="table table-bordered table-striped " id="tblDetallePrestamo">
                                     <thead>
                                         <tr>
+                                
 
                                             <th>ID</th>
                                             <th>Categoría</th>
@@ -130,10 +131,11 @@
                                             <th>etiqueta</th>
                                             <th>Serial</th>
                                             <th>Ubicación</th>
-
+                                            
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        
                                         <!-- Aquí se cargarán los detalles del préstamo -->
                                     </tbody>
                                 </table>

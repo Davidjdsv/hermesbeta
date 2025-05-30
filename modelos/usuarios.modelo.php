@@ -67,7 +67,10 @@ class ModeloUsuarios{
             $stmt = Conexion::conectar()->prepare("SELECT u.*, 
                                                             r.id_rol, r.nombre_rol, 
                                                             f.id_ficha, f.descripcion AS descripcion_ficha, f.codigo, 
-                                                            s.id_sede, s.nombre_sede
+                                                            s.id_sede, s.nombre_sede,
+                                                            u.id_usuario
+                                                            -- u.nombre,
+                                                            -- u.apellido
                                                     FROM $tabla as u      
                                                     LEFT JOIN usuario_rol ur ON u.id_usuario = ur.id_usuario
                                                     LEFT JOIN roles r ON ur.id_rol = r.id_rol

@@ -246,43 +246,43 @@ class ModeloEquipos{
 
     public static function mdlAgregarEquipos($tabla, $datos){
         try {
-            $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla 
-                                                    (numero_serie, 
-                                                    etiqueta, 
-                                                    descripcion, 
-                                                    ubicacion_id, 
-                                                    categoria_id, 
-                                                    cuentadante_id,
-                                                    id_estado) 
-                                                    VALUES (:numero_serie, 
-                                                    :etiqueta, 
-                                                    :descripcion, 
-                                                    :ubicacion_id, 
-                                                    :categoria_id, 
-                                                    :cuentadante_id,
-                                                    :id_estado)");
+            // Preparar la consulta con los valores por defecto definidos en la base de datos
+            $stmt = Conexion::conectar()->prepare("INSERT INTO equipos (numero_serie,
+                                                                etiqueta,
+                                                                descripcion,
+                                                                categoria_id,
+                                                                ubicacion_id,
+                                                                cuentadante_id,
+                                                                id_estado) 
+                                                                VALUES (:numero_serie, 
+                                                                :etiqueta, 
+                                                                :descripcion, 
+                                                                :categoria_id, 
+                                                                (SELECT ubicacion_id FROM ubicaciones WHERE nombre = 'Almacen' LIMIT 1), 
+                                                                :cuentadante_id, 
+                                                                (SELECT id_estado FROM estados WHERE estado = 'Disponible' LIMIT 1));");
     
+            // Vincular los parámetros con los datos del formulario
             $stmt->bindParam(":numero_serie", $datos["numero_serie"], PDO::PARAM_STR);
             $stmt->bindParam(":etiqueta", $datos["etiqueta"], PDO::PARAM_STR);
             $stmt->bindParam(":descripcion", $datos["descripcion"], PDO::PARAM_STR);
-            $stmt->bindParam(":ubicacion_id", $datos["ubicacion_id"], PDO::PARAM_INT);
             $stmt->bindParam(":categoria_id", $datos["categoria_id"], PDO::PARAM_INT);
             $stmt->bindParam(":cuentadante_id", $datos["cuentadante_id"], PDO::PARAM_INT);
-            $stmt->bindParam(":id_estado", $datos["id_estado"], PDO::PARAM_INT);
     
+            // Ejecutar la consulta
             if ($stmt->execute()) {
                 return "ok";
             } else {
-                // Captura el error y devuélvelo para depuración
                 $errorInfo = $stmt->errorInfo();
+                error_log("Error SQL en mdlAgregarEquipos: " . $errorInfo[2]); // Guardar error en log
                 return "error: " . $errorInfo[2];
             }
         } catch (PDOException $e) {
-            error_log("Error en mdlAgregarEquipos: " . $e->getMessage()); // Guardar en log
+            error_log("Error en mdlAgregarEquipos: " . $e->getMessage());
             return "error";
         } finally {
             $stmt->closeCursor();
-            $stmt = null; // Cerrar conexión
+            $stmt = null;
         }
     }
 
