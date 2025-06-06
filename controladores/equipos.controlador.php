@@ -153,10 +153,12 @@ class ControladorEquipos{
                 "equipo_id" => $_POST["idTraspasoUbicacion"],
                 "ubicacion_id" => $_POST["nuevaUbicacionId"]
             );
+            // mostramos el array de datos en error_log para debug
+            error_log(print_r($datos, true));            
 
             $respuesta = ModeloEquipos::mdlRealizarTraspasoUbicacion($tabla, $datos);
             // var_dump($respuesta);
-            error_log($respuesta);
+            // error_log($respuesta);
             if($respuesta == "ok"){
                 echo '<script>
                         swal.fire({

@@ -1,6 +1,7 @@
 # Template
 AdminLTE/
 modelos/conexion.php
+ajax/serverside/serverside.conexion.php
 
 # .htaccess
 .htaccess

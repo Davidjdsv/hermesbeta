@@ -58,3 +58,16 @@ if (isset($_POST["idUsuarioEstado"], $_POST["estado"])) {
     echo $respuesta ? 'ok' : 'error';
     exit;
 }
+
+// Cambiar condicion del usuario
+
+if (isset($_POST["idUsuarioCondicion"], $_POST["condicion"])) {
+
+    $respuesta = ControladorUsuarios::ctrCambiarCondicionUsuario(
+        $_POST["idUsuarioCondicion"],
+        $_POST["condicion"]
+    );
+    
+    echo $respuesta;
+    exit;
+}

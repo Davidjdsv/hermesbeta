@@ -33,35 +33,7 @@
                 <th>Acciones</th>
               </tr>
             </thead>
-            <tbody>
-              <?php
 
-              $item = null;
-              $valor = null;
-              $equipos = ControladorEquipos::ctrMostrarEquipos($item, $valor);
-
-              foreach ($equipos as $key => $equipo) {
-                echo '<tr>';
-                echo '<td>' . ($key + 1) . '</td>';
-                echo '<td>' . $equipo['numero_serie']    . '</td>';
-                echo '<td>' . $equipo['etiqueta']        . '</td>';
-                echo '<td>' . $equipo['descripcion']     . '</td>';
-                echo '<td>' . $equipo['ubicacion_nombre']    . '</td>';
-                echo '<td>' . $equipo['categoria_nombre']    . '</td>';
-                echo '<td>' . $equipo['cuentadante_nombre']      . '</td>';
-                echo '<td>' . $equipo['estado_nombre']      . '</td>';
-                // Botón de acciones
-                echo '<td>
-                        <div class="btn-group">
-                          <button title="Editar datos equipo" class="btn btn-default btn-xs btnEditarEquipo bg-warning" idEquipo="' . $equipo["equipo_id"] . '" data-toggle="modal" data-target="#modalEditarEquipo"><i class="fas fa-edit  mr-1 ml-1"></i></button>
-                          <button title="Traspaso de cuentadante" class="btn btn-default btn-xs btnTraspasarEquipo ml-2 bg-success" idEquipoTraspaso="' . $equipo["equipo_id"] . '" data-toggle="modal" data-target="#modalTraspaso"><i class="fas fa-share mr-1 ml-1"></i></button>
-                          <button title="Traspaso de ubicación" class="btn btn-default btn-xs btnTraspasarUbicacion ml-2 bg-info" idEquipoTraspasoUbicacion="' . $equipo["equipo_id"] . '" data-toggle="modal" data-target="#modalTraspasoUbicacion"><i class="fas fa-map-pin mr-1 ml-1"></i></button>
-                        </div>
-                        </td>';
-                echo '</tr>';
-              }
-              ?>
-            </tbody>
           </table>
         </div>
         <!-- /.card-body -->
@@ -369,7 +341,7 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                   </div>
-                  <input type="hidden" id="ubicacionActualId" name="ubicacionActualId">
+                  <input type="hidden" id="ubicacionActualId" name="ubicacionActualId" value="">
                   <input type="text" class="form-control" id="ubicacionActual" name="ubicacionActual" readonly>
                 </div>
               </div>

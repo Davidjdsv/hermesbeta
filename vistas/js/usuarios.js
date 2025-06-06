@@ -1,5 +1,93 @@
 //************************************************************
 // 
+//  SERVERSIDE USUARIOS
+// 
+//************************************************************/
+$('#tblUsuarios').DataTable({
+    // destroy: true,
+    "processing": true,
+    "serverSide": true,
+    "sAjaxSource": "ajax/serverside/serverside.usuarios.php",
+    "columns": [
+        { "data": null},
+        { "data": "1" },
+        { "data": "2" },
+        { "data": "3" },
+        { "data": "4" },
+        { "data": "5" },
+        { "data": "6" },
+        { "data": "7" },
+        { "data": "8" },
+        { "data": "9" },
+        { "data": null}      
+    ],
+    "columnDefs": [
+        {
+            "targets": [0],
+            "render": function(data, type, row, meta) {
+                return meta.row + 1;
+            }
+        },
+        {
+            "targets": [8],
+            "render": function(data, type, row) {
+                if (data === "activo") {
+                    return "<button title='Inactivar usuario' class='btn btn-success btnActivarUsuario' data-id='" + row[0] + "' data-estado='inactivo'>Activo</button>";
+                } else {
+                    return "<button title='Activar usuario' class='btn btn-danger btnActivarUsuario' data-id='" + row[0] + "' data-estado='activo'>Inactivo</button>";                    
+                }
+            }
+        },
+        {
+            "targets": [-1],
+            "render": function(data, type, row) {
+            return "<div class='btn-group'><button title='Consultar detalles de usuario' class='btn btn-default btnConsultarUsuario' idUsuario='" + row[0] + "' data-toggle='modal' data-target='#modalConsularUsuario'><i class='fas fa-eye'></i></button><button title='Editar usuario' class='btn btn-default btnEditarUsuario' idUsuario='" + row[0] + "' data-toggle='modal' data-target='#modalEditarUsuario'><i class='fas fa-edit'></i></button><button title='Solicitudes del usuario' class='btn btn-default btnSolicitudesUsuario' idUsuario='" + row[0] + "' data-numero-documento='"+ row[2] +"' data-toggle='modal' data-target='#modalSolicitudesUsuario'><i class='fas fa-laptop'></i></button></div>"
+            }
+        },
+        {
+            "targets": [9],
+            "render": function(data, type, row) {
+                let condicion = row[9];
+                let idUsuario = row[0];
+                if (condicion === "en_regla") {
+                    return `<button class="btn btn-success  btnCambiarCondicionUsuario" idUsuario="${idUsuario}" condicionUsuario="advertido">En regla</button>`;
+                } else if (condicion === "advertido") {
+                    return `<button class="btn btn-warning  btnCambiarCondicionUsuario" idUsuario="${idUsuario}" condicionUsuario="penalizado">Advertido</button>`;
+                } else if (condicion === "penalizado") {
+                    return `<button class="btn btn-danger  btnCambiarCondicionUsuario" idUsuario="${idUsuario}" condicionUsuario="en_regla">Penalizado</button>`;
+                } else {
+                    return '';
+                }
+            }
+        },
+
+
+    ],
+    "responsive": true,
+    "autoWidth": false,
+    "lengthChange": true,
+    "lengthMenu":[10, 25, 50, 100],
+    "language": {
+        "lengthMenu": "Mostrar _MENU_ registros",
+        "zeroRecords": "No se encontraron resultados",
+        "info": "Mostrando pagina _PAGE_ de _PAGES_",
+        "infoEmpty": "No hay registros disponibles",
+        "infoFiltered": "(filtrado de _MAX_ total registros)",
+        "search": "Buscar:",
+        "paginate": {
+          "first":      "Primero",
+          "last":       "Ultimo",
+          "next":       "Siguiente",
+          "previous":   "Anterior"
+        },
+    },
+    "buttons": ["csv", "excel"],
+    "dom": "lfBrtip"
+});   
+
+
+//************************************************************
+// 
 //  SCRIPT PARA AGREGAR USUARIOS
 // 
 //************************************************************/
@@ -22,18 +110,121 @@ $(document).on("change", "#selectRol", function() {
         // $("#ficha").addClass("d-none");
     }
 });
+
+//************************************************************
+// 
+//  Condicion de los usuarios (solo admin puede cambiar)
+// 
+//************************************************************/
+
+$(document).on('click', '.btnCambiarCondicionUsuario', function() {
+    const boton = $(this);
+    const datos = {
+        idUsuarioCondicion: boton.attr("idUsuario"),
+        condicion: boton.attr("condicionUsuario")
+    };
+
+    $.ajax({
+        url: "ajax/usuarios.ajax.php",
+        method: "POST",
+        data: datos,
+        success: response => manejarRespuestaCondicion(response, boton),
+        error: () => manejarErrorCondicion(boton)
+    });
+});
+
+// Función para mostrar feedback visual más estético al cambiar condición
+
+function toggleBotonLoading(boton, estado) {
+    if (estado) {
+        // Mostrar spinner y desactivar botón temporalmente
+        boton.data('original-html', boton.html());
+        boton.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i>');
+    } else {
+        // Queda en el estado original el boton si se da click y no es administrador
+        const originalHtml = boton.data('original-html');
+        if (originalHtml !== undefined) {
+            boton.html(originalHtml);
+            boton.removeData('original-html');
+        }
+        boton.prop('disabled', false);
+    }
+}
+
+// Función para manejar la respuesta de la condición del usuario
+
+function manejarRespuestaCondicion(respuesta, boton) {
+    if (respuesta.trim() === "ok") {
+        actualizarBotonCondicion(boton, boton.attr("condicionUsuario"));
+    } else if (respuesta.trim() === "acceso_denegado") {
+        Toast.fire({
+            icon: 'error',
+            title: 'Acceso denegado'
+        });
+        toggleBotonLoading(boton, false);
+    } else {
+        toggleBotonLoading(boton, false);
+    }
+}
+
+// Función para manejar errores de conexión
+
+function manejarErrorCondicion(boton) {
+    Toast.fire({
+        icon: 'error',
+        title: 'Error de conexión'
+    });
+    toggleBotonLoading(boton, false);
+}
+
+// constantes para los estados de condición del usuario
+
+const ESTADOS_CONDICION = {
+    en_regla: {
+        removeClasses: 'btn-warning btn-danger',
+        addClass: 'btn-success',
+        texto: 'En regla',
+        siguiente: 'advertido'
+    },
+    advertido: {
+        removeClasses: 'btn-success btn-danger',
+        addClass: 'btn-warning',
+        texto: 'Advertido',
+        siguiente: 'penalizado'
+    },
+    penalizado: {
+        removeClasses: 'btn-success btn-warning',
+        addClass: 'btn-danger',
+        texto: 'Penalizado',
+        siguiente: 'en_regla'
+    }
+};
+
+// Función para actualizar el botón de condición del usuario
+
+function actualizarBotonCondicion(boton, nuevaCondicion) {
+    const estado = ESTADOS_CONDICION[nuevaCondicion];
+    if (!estado) return;
+
+    boton
+        .removeClass(estado.removeClasses)
+        .addClass(estado.addClass)
+        .html(estado.texto)
+        .attr('condicionUsuario', estado.siguiente)
+        .prop('disabled', false);
+}
+
 //************************************************************
 // script para cambiar los estados de los usuarios
 //************************************************************/
 $(document).on('click', '.btnActivarUsuario', function () {
     var idUsuario = $(this).data('id');
-    var nuevoEstado = $(this).data('estado');
+    var estadoActual = $(this).data('estado'); // el estado al que se va a cambiar
     var boton = $(this);
 
-    // Desactivar el botón para evitar múltiples clics
+    // Desactivar temporalmente el botón
     boton.prop('disabled', true);
 
-    // Guardar el texto original y mostrar spinner
     var textoOriginal = boton.html();
     boton.html('<i class="fas fa-spinner fa-spin"></i>');
 
@@ -42,29 +233,21 @@ $(document).on('click', '.btnActivarUsuario', function () {
         method: "POST",
         data: {
             idUsuarioEstado: idUsuario,
-            estado: nuevoEstado
+            estado: estadoActual
         },
         success: function (respuesta) {
             if (respuesta.trim() === "ok") {
-                Swal.fire("Éxito", "Estado actualizado", "success");
-
-                // Actualizar visualmente el botón sin recargar
-                if (nuevoEstado === "activo") {
-                    boton
-                        .removeClass('btn-danger')
-                        .addClass('btn-success')
-                        .text('Activo')
-                        .data('estado', 'inactivo');
+                // Cambiar estado visualmente sin recargar
+                if (estadoActual === "activo") {
+                    boton.removeClass('btn-danger').addClass('btn-success');
+                    boton.text('Activo');
+                    boton.data('estado', 'inactivo');
                 } else {
-                    boton
-                        .removeClass('btn-success')
-                        .addClass('btn-danger')
-                        .text('Inactivo')
-                        .data('estado', 'activo');
+                    boton.removeClass('btn-success').addClass('btn-danger');
+                    boton.text('Inactivo');
+                    boton.data('estado', 'activo');
                 }
-
                 boton.prop('disabled', false);
-
             } else {
                 Swal.fire("Error", "No se pudo cambiar el estado", "error");
                 boton.prop('disabled', false).html(textoOriginal);
@@ -522,6 +705,8 @@ $(document).on("click", ".btnEditarUsuario", function() {
             $("#editTelefono").val(respuesta["telefono"]);
             $("#editDireccion").val(respuesta["direccion"]);
             $("#nombreEditPrograma").prop("placeholder", respuesta["descripcion_ficha"]);
+            $("#editGenero").val(respuesta["genero"]);
+
 
             // Aquí agregamos estado y condicion
             $("#editEstado").val(respuesta["estado"]);

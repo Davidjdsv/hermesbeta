@@ -53,13 +53,13 @@ class AjaxEquipos {
         echo json_encode($respuesta);
     }
 
-    public function ajaxMostrarDatosUbicacionDestino(){
-        $item = "ubicacion_id";
-        $valor = $this -> nuevaUbicacionId;
-        $respuesta = ControladorEquipos::ctrMostrarUbicacionDestino($item, $valor);
-        // error_log(print_r($respuesta, true));
-        echo json_encode($respuesta);
-    }
+    // public function ajaxMostrarDatosUbicacionDestino(){
+    //     $item = "ubicacion_id";
+    //     $valor = $this -> nuevaUbicacionId;
+    //     $respuesta = ControladorEquipos::ctrMostrarUbicacionDestino($item, $valor);
+    //     // error_log(print_r($respuesta, true));
+    //     echo json_encode($respuesta);
+    // }
 }
 
 
@@ -69,15 +69,15 @@ EJECUCIÓN DEL CÓDIGO CUANDO SE ENVÍA EL FORMULARIO
 
 if (isset($_POST["idEquipoTraspasoUbicacion"])) {
     $traspaso = new AjaxEquipos();
-    $traspaso -> idEquipoTraspasoUbicacion = $_POST["idEquipoTraspasoUbicacion"];
-    $traspaso -> ajaxMostrarDatosUbicacion();
+    $traspaso -> idEquipo = $_POST["idEquipoTraspasoUbicacion"];
+    $traspaso -> ajaxMostrarEquipo();
 }
 
-if (isset($_POST["nuevaUbicacionId"])) {
-    $traspaso = new AjaxEquipos();
-    $traspaso -> nuevaUbicacionId = $_POST["nuevaUbicacionId"];
-    $traspaso -> ajaxMostrarDatosUbicacionDestino();
-}
+// if (isset($_POST["nuevaUbicacionId"])) {
+//     $traspaso = new AjaxEquipos();
+//     $traspaso -> nuevaUbicacionId = $_POST["nuevaUbicacionId"];
+//     $traspaso -> ajaxMostrarDatosUbicacionDestino();
+// }
 
 
 if(isset($_POST["buscarDocumentoId"])){

@@ -58,7 +58,7 @@ class ControladorFichas {
         if (isset($_POST["editCodigoFicha"]) && isset($_POST["editDescripcionFicha"])  && isset($_POST["editSedeFicha"]) && isset($_POST["editFechaInicioFicha"]) && isset($_POST["editFechaFinFicha"]) && isset($_POST["idEditFicha"])) {
             
             if (preg_match('/^[0-9]+$/', $_POST["editCodigoFicha"]) && 
-            preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ() \s]+$/', $_POST["editDescripcionFicha"])) {
+            preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ() .,\s]+$/', $_POST["editDescripcionFicha"])) {
                 // var_dump($_POST);
                 // die();
 

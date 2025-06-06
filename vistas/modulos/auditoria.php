@@ -26,15 +26,6 @@
                                         <th>Número Doc.</th>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
-                                        <th>Correo</th>
-                                        <th>Usuario</th>
-                                        <th>Teléfono</th>
-                                        <th>Dirección</th>
-                                        <th>Género</th>
-                                        <th>Foto</th>
-                                        <th>Estado</th>
-                                        <th>Condición</th>
-                                        <th>Fecha Registro</th>
                                         <th>Editado Por</th>
                                         <th>Campo Modificado</th>
                                         <th>Valor Anterior</th>
@@ -55,7 +46,3 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-<!-- Tu archivo JS con la tabla y modal -->
-<!-- <script src="/hermesbeta/vistas/js/auditoria.js"></script> -->
-
-

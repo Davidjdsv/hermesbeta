@@ -88,8 +88,8 @@ class ControladorSedes
     static public function ctrEditarSede()
     {
         if (isset($_POST["nombreEditSede"]) && isset($_POST["direccionEditSede"]) && isset($_POST["descripcionEditSede"])) {
-            if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombreEditSede"]) &&
-                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["direccionEditSede"])) {
+            if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ .,]+$/', $_POST["nombreEditSede"]) &&
+                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ .,#\-\/]+$/', $_POST["direccionEditSede"])) {
 
                 $tabla = "sedes";
                 $datos = array(
