@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>devoluciones</h1>
+          <h1>Devoluciones</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -18,90 +18,54 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-12">
           <div class="card">
             <div class="card-body">
-              <table id="tblSedes" class="table table-bordered table-striped">
+              <table id="tblDevoluciones" class="table table-bordered table-striped">
                 <thead>
                   <tr>
-                    <th>Identificacion</th>
+                    <th>ID</th>
+                    <th>Identificación</th>
                     <th>Nombre</th>
-                    <th>Rol</th>
-                    <th>Ficha</th>
-                    <th>Fecha</th>
+                    <th>Apellido</th>
+                    <th>Telefono</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Devolución</th>
+                    <th>Tipo de Préstamo</th>
                     <th>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>123456</td>
-                    <td>Juan Perez</td>
-                    <td>Admin</td>
-                    <td>F123</td>
-                    <td>2023-10-01</td>
-                    <td>ABC123</td>
-                  </tr>
-                  <tr>
-                    <td>789012</td>
-                    <td>Maria Lopez</td>
-                    <td>User</td>
-                    <td>F456</td>
-                    <td>2023-10-02</td>
-                    <td>XYZ789</td>
-                  </tr>
-                  <tr>
-                    <td>345678</td>
-                    <td>Carlos Ruiz</td>
-                    <td>Manager</td>
-                    <td>F789</td>
-                    <td>2023-10-03</td>
-                    <td>LMN456</td>
-                  </tr>
+                  <?php
+
+                  $item = null;
+                  $valor = null;
+                  $devoluciones = ControladorDevoluciones::ctrMostrarDevoluciones($item, $valor);
+
+                  foreach ($devoluciones as $key => $value) {
+                    echo '
+                    <tr>
+                      <td>' . ($key + 1) . '</td>
+                      <td>' . $value["numero_documento"] . '</td>
+                      <td>' . $value["nombre_usuario"] . '</td>
+                      <td>' . $value["apellido_usuario"] . '</td>
+                      <td>' . $value["telefono"] . '</td>
+                      <td>' . $value["fecha_inicio"] . '</td>
+                      <td>' . $value["fecha_fin"] . '</td>
+                      <td>' . $value["tipo_prestamo"] . '</td>
+                      <td>
+                        <div class="btn-group">';
+                    // Modificamos para usar una sola modal y pasar el ID del préstamo
+                    echo '<button class="btn btn-info btn-sm btnVerUsuario" data-id="' . $value["id_prestamo"] . '" data-toggle="modal" data-target="#modalVerDetallesPrestamo">
+                                    <i class="fas fa-eye"></i> Ver
+                                  </button>';
+                    echo '</div>
+                      </td>
+                    </tr>';
+                  }
+                  ?>
                 </tbody>
               </table>
-            </div>
-          </div>
-        </div>
-        <!-- card visualizacion informacion -->
-        <div class="col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <div class="image">
-                <img class="img-circle elevation-2 justify-content-between" alt="User Image">
-              </div>
-              <div class="info justify-content-between">
-                <h6>jhon doe</h6>
-              </div>
-              <table class="table table-bordered table-striped">
-                <tr>
-                  <th>Identificacion</th>
-                  <td>Juan</td>
-                </tr>
-                <tr>
-                  <th>Ficha</th>
-                  <td>28</td>
-                </tr>
-                <tr>
-                  <th>Placa</th>
-                  <td>Bogotá</td>
-                </tr>
-                <tr>
-                  <th>n° telefonico</th>
-                  <td>1212123144</td>
-                </tr>
-                <tr>
-                  <th>Direccionn</th>
-                  <td>cr2iwjsiw</td>
-                </tr>
-              </table>
-              <div class="card-footer d-flex justify-content-between ml-2">
-                <button class="btn btn-danger float-right mr-2 ml-2" data-toggle="modal" data-target="#modalMalEstado">
-                  Mal Estado
-                </button>
-                <button class="btn btn-success float-right mr-2 ml-2" data-toggle="modal" data-target="#modalBuenEstado">
-                  Buen Estado
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -110,44 +74,126 @@
   </section>
 </div>
 
-<!-- Modal Mal Estado -->
-<div class="modal fade" id="modalMalEstado" tabindex="-1" role="dialog" aria-labelledby="modalMalEstadoLabel" aria-hidden="true">
+<!-- Modal Ver Detalles del Préstamo (Inmediatos y de Reserva) "Modal consolidada" -->
+<div class="modal fade" id="modalVerDetallesPrestamo" tabindex="-1" role="dialog" aria-labelledby="modalVerUsuarioLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalMalEstadoLabel">Reporte de Mal Estado</h5>
+      <div class="modal-header bg-info">
+        <h5 class="modal-title" id="modalVerUsuarioLabel">Detalles de la Devolución</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Por favor, describa el problema en el siguiente campo para generar un reporte:</p>
-        <form id="formMalEstado" method="POST">
-          <div class="form-group">
-            <label for="reporteMalEstado">Descripción del Problema</label>
-            <textarea class="form-control" id="reporteMalEstado" name="reporteMalEstado" rows="4" required></textarea>
+        <div class="row">
+          <!-- Información del Usuario -->
+          <div class="col-md-4 text-center">
+            <img class="img-circle elevation-2 mb-3" id="userImage" src="vistas/img/usuarios/default/anonymous.png" alt="User Image" style="width: 120px; height: 120px;">
+            <h4 id="userName">Nombre del Usuario</h4>
+            <p class="text-muted" id="userRol">Rol</p>
           </div>
-          <div class="d-flex justify-content-center mt-3">
-            <button type="button" class="btn btn-danger mr-2" data-dismiss="modal" >Cancelar</button>
-            <button type="button" class="btn btn-success" id="btnEnviarReporte" >Enviar</button>
+
+          <!-- Detalles del Préstamo -->
+          <div class="col-md-8">
+            <div class="card card-outline card-info">
+              <div class="card-header">
+                <h3 class="card-title">Información del Préstamo</h3>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <table class="table table-sm">
+                      <tbody class="info-prestamo">
+                        <tr>
+                          <th style="width: 40%">Identificación:</th>
+                          <td><span id="prestamoIdentificacion"></span></td>
+                        </tr>
+                        <tr>
+                          <th>Nombre:</th>
+                          <td><span id="prestamoNombre"></span></td>
+                        </tr>
+                        <tr>
+                          <th>Apellido:</th>
+                          <td><span id="prestamoApellido"></span></td>
+                        </tr>
+                        <tr>
+                          <th>Teléfono:</th>
+                          <td><span id="prestamoTelefono"></span></td>
+                        </tr>
+                        <tr>
+                          <th>Ficha:</th>
+                          <td><span id="prestamoFicha"></span></td>
+                        </tr>
+                        <tr>
+                          <th>Tipo de Préstamo:</th>
+                          <td><span id="prestamoTipo"></span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-md-6">
+                    <table class="table table-sm">
+                      <tbody class="info-prestamo-2">
+                        <tr>
+                          <th style="width: 40%">Fecha de Inicio:</th>
+                          <td><span id="prestamoFechaInicio"></span></td>
+                        </tr>
+                        <tr>
+                          <th>Fecha de Devolución:</th>
+                          <td><span id="prestamoFechaFin"></span></td>
+                        </tr>
+                        <tr>
+                          <th>Estado:</th>
+                          <td><span id="prestamoEstado"></span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Detalles del Equipo -->  
           </div>
-        </form>
+        </div>
+        <div class="card card-header  card-success">
+          <h3 class="card-title">Equipos en Préstamo</h3>
+        </div>
+        <div id="equiposListContainer">
+          <!-- Aquí se cargarán los detalles de cada equipo individualmente con JavaScript -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  document.getElementById('btnEnviarReporte').addEventListener('click', function() {
-    const reporte = document.getElementById('reporteMalEstado').value;
-
-    if (reporte.trim() === '') {
-      // Validación: el campo no puede estar vacío
-      // Por ahora, solo cerramos el modal.
-      $('#modalMalEstado').modal('hide'); // Cierra el modal
-    }
-    // Aquí se puede implementar la lógica para enviar el reporte al sistema.
-    // Por ahora, solo cerramos el modal.
-    $('#modalMalEstado').modal('hide'); // Cierra el modal
-  });
-</script>
+<!-- Modal para registrar motivo de mal estado -->
+<div class="modal fade" id="modalMalEstado">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-danger">
+        <h4 class="modal-title">Registrar Motivo de Mal Estado</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="formMalEstado">
+          <input type="hidden" id="malEstadoPrestamoId">
+          <!-- Necesitaremos el ID del equipo específico -->
+          <input type="hidden" id="malEstadoEquipoId">
+          <div class="form-group">
+            <label for="motivoMalEstado">Describe el motivo del mal estado:</label>
+            <textarea class="form-control" id="motivoMalEstado" rows="4" required></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-danger" id="btnGuardarMalEstado">Guardar Motivo y Enviar a Mantenimiento</button>
+      </div>
+    </div>
+  </div>
+</div>

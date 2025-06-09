@@ -381,9 +381,17 @@ $(document).on("click", ".btnSolicitudesUsuario", function() {
     }
 
     // Redirigir a consultar-solicitudes con los parámetros necesarios
-    window.location.href = "consultar-solicitudes?" +
-        "numeroDocumento=" + encodeURIComponent(numeroDocumento) +
-        "&autoBuscar=1";
+    // Construir la URL base
+    let redirectUrl = "consultar-solicitudes?";
+    
+    // Agregar parámetros usando el nombre de parámetro 'cedula' 
+    // para compatibilidad con la función existente
+    redirectUrl += "cedula=" + encodeURIComponent(numeroDocumento) + 
+                  "&origin=usuarios" +
+                  "&autoBuscar=1";
+    
+    // Redireccionar
+    window.location.href = redirectUrl;
 });
 
 // ======================================

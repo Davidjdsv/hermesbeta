@@ -9,6 +9,7 @@ class AjaxUsuarios
     public $sede;
     public $idUsuario;
     public $item;
+    
 
     public function ajaxFichasSede()
     {

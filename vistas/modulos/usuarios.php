@@ -80,7 +80,7 @@
   <div class="modal fade" id="modalConsularUsuario">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary">
           <h4 class="modal-title">Consultar usuario</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -255,7 +255,7 @@
   <div class="modal fade" id="modalRegistrarUsuario">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary">
           <h4 class="modal-title">Agregar usuario</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -511,7 +511,7 @@
   <div class="modal fade" id="modalEditarUsuario">
     <div class="modal-dialog">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header bg-primary">
           <h4 class="modal-title">Editar usuario</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -538,12 +538,12 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                       </div>
-                      <input type="text" class="form-control" name="editNombre" id="editNombre" placeholder="Nombre" required>
+                      <input type="text" class="form-control" name="editNombre" id="editNombre" placeholder="Nombre" readonly required>
                     </div>
                   </div>
                   <div class="col-lg-6">
                     <div class="input-group ">
-                      <input type="text" class="form-control" name="editApellido" id="editApellido" placeholder="Apellido" required>
+                      <input type="text" class="form-control" name="editApellido" id="editApellido" placeholder="Apellido" readonly required>
                     </div>
                   </div>
                 </div>
@@ -569,7 +569,7 @@
                   <div class="col-lg-8">
                     <label>Numero de documento</label>
                     <div class="input-group ">
-                      <input type="text" class="form-control" name="editNumeroDocumento" id="editNumeroDocumento" placeholder="Numero documento" disabled>
+                      <input type="text" class="form-control" name="editNumeroDocumento" id="editNumeroDocumento" placeholder="Numero documento" readonly required>
                     </div>
                   </div>
                 </div>

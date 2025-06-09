@@ -57,25 +57,26 @@ ALTER TABLE usuarios
 ADD COLUMN foto VARCHAR(100) AFTER genero;
 ```
 
-### Ruta por defecto para la foto de usuario
+### 2. Ruta por defecto para la foto de usuario
 
-Al crear un nuevo usuario, el valor por defecto de la columna `foto` debe ser:  
-`vistas/img/usuarios/default/anonymous.png`
+- Al crear un nuevo usuario, el valor por defecto de la columna `foto` debe ser:  
+    `vistas/img/usuarios/default/anonymous.png`
 
-### Creación automática de carpetas para fotos de usuario
+### 3. Creación automática de carpetas para fotos de usuario
 
-Cuando se crea un usuario nuevo:
-- Se debe crear automáticamente la carpeta `img` dentro de la carpeta `vistas` si no existe.
-- Dentro de `img`, se debe crear la carpeta `usuarios`.
-- Dentro de `usuarios`, se debe crear una carpeta con el número de documento del usuario.
-- En esa carpeta es donde se almacenará la foto del usuario.
+- Cuando se crea un usuario nuevo:
+    - Se debe crear automáticamente la carpeta `img` dentro de la carpeta `vistas` si no existe.
+    - Dentro de `img`, se debe crear la carpeta `usuarios`.
+    - Dentro de `usuarios`, se debe crear una carpeta con el número de documento del usuario.
+    - En esa carpeta es donde se almacenará la foto del usuario.
 
-### Ejemplo de actualización de datos
+### 4. Ejemplo de actualización de datos
 
 ```sql
--- Ejemplo: Actualizar la ruta de la foto para todos los usuarios existentes
+-- Ejemplo: Actualizar la ruta de la foto para un usuario existente
 UPDATE usuarios
-SET foto = 'vistas/img/usuarios/default/anonymous.png';
+SET foto = 'vistas/img/usuarios/default/anonymous.png'
+WHERE id_usuario = 1;
 ```
 
 
@@ -97,12 +98,74 @@ CREATE TABLE auditoria_usuarios (
 - Este trigger se ejecuta después de cada actualización en la tabla usuarios y detecta cambios en campos específicos. Inserta un registro en la tabla auditoria_usuarios por cada cambio detectado.
 ```sql
 DELIMITER $$
+>>>>>>>>> Temporary merge branch 2
 
 CREATE TRIGGER trg_auditar_usuarios
 AFTER UPDATE ON usuarios
 FOR EACH ROW
 BEGIN
   DECLARE cambios TEXT DEFAULT '';
+<<<<<<<<< Temporary merge branch 1
+  DECLARE valores_anteriores TEXT DEFAULT '';
+  DECLARE valores_nuevos TEXT DEFAULT '';
+
+  -- Comparar y registrar cada campo que cambie
+  IF OLD.tipo_documento <> NEW.tipo_documento THEN
+    SET cambios = CONCAT(cambios, 'tipo_documento; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.tipo_documento, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.tipo_documento, '; ');
+  END IF;
+
+  IF OLD.numero_documento <> NEW.numero_documento THEN
+    SET cambios = CONCAT(cambios, 'numero_documento; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.numero_documento, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.numero_documento, '; ');
+  END IF;
+
+  IF OLD.nombre <> NEW.nombre THEN
+    SET cambios = CONCAT(cambios, 'nombre; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.nombre, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.nombre, '; ');
+  END IF;
+
+  IF OLD.apellido <> NEW.apellido THEN
+    SET cambios = CONCAT(cambios, 'apellido; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.apellido, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.apellido, '; ');
+  END IF;
+
+  IF OLD.correo_electronico <> NEW.correo_electronico THEN
+    SET cambios = CONCAT(cambios, 'correo_electronico; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.correo_electronico, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.correo_electronico, '; ');
+  END IF;
+
+  IF OLD.telefono <> NEW.telefono THEN
+    SET cambios = CONCAT(cambios, 'telefono; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.telefono, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.telefono, '; ');
+  END IF;
+
+  IF OLD.direccion <> NEW.direccion THEN
+    SET cambios = CONCAT(cambios, 'direccion; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.direccion, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.direccion, '; ');
+  END IF;
+
+  IF OLD.genero <> NEW.genero THEN
+    SET cambios = CONCAT(cambios, 'genero; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.genero, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.genero, '; ');
+  END IF;
+
+  IF OLD.estado <> NEW.estado THEN
+    SET cambios = CONCAT(cambios, 'estado; ');
+    SET valores_anteriores = CONCAT(valores_anteriores, OLD.estado, '; ');
+    SET valores_nuevos = CONCAT(valores_nuevos, NEW.estado, '; ');
+  END IF;
+
+  -- Si hubo algún cambio, insertar en la tabla de auditoría
+=========
   DECLARE cambios_anterior TEXT DEFAULT '';
   DECLARE campos TEXT DEFAULT '';
   DECLARE separador VARCHAR(3) DEFAULT '';
@@ -186,6 +249,7 @@ BEGIN
   END IF;
 
   -- Insertar registro solo si hubo cambios
+>>>>>>>>> Temporary merge branch 2
   IF cambios <> '' THEN
     INSERT INTO auditoria_usuarios (
       id_usuario_afectado,
@@ -196,10 +260,17 @@ BEGIN
       fecha_cambio
     ) VALUES (
       OLD.id_usuario,
+<<<<<<<<< Temporary merge branch 1
+      NEW.id_usuario, -- Asume que el campo NEW.id_usuario guarda el editor; puedes ajustarlo según tu lógica
+      cambios,
+      valores_anteriores,
+      valores_nuevos,
+=========
       @id_usuario_editor,
       campos,
       cambios_anterior,
       cambios,
+>>>>>>>>> Temporary merge branch 2
       NOW()
     );
   END IF;

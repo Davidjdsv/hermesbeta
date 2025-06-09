@@ -4,9 +4,11 @@ window.addEventListener('load', function() {
   // initializeDataTable("#tblUsuarios");
   // initializeDataTable("#tblEquipos");
   initializeDataTable("#tblRoles");
+  initializeDataTable("#tblAutorizaciones");
+  initializeDataTable("#tblDevoluciones");
+  initializeDataTable("#tblMantenimiento");
   initializeDataTable("#tblModalHistoricoSolicitudes");
   initializeDataTable("#tblMisPrestamosUsuario");
-  
   // initializeDataTable("#tblPermisos");
 });
 

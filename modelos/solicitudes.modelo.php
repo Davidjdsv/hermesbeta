@@ -126,16 +126,23 @@ class ModeloSolicitudes
     static public function mdlMostrarPrestamo($item, $valor)
     {
 
-        $stmt = Conexion::conectar()->prepare("SELECT p.* FROM prestamos p WHERE p.$item = :$item");
-        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
-        $stmt->execute();
-
-        //verificamos el tamaño de la respuesta
-        if($stmt->rowCount() == 1){
-            return $stmt->fetch(PDO::FETCH_ASSOC);  
+        if($item != null){
+            $stmt = Conexion::conectar()->prepare("SELECT p.* FROM prestamos p WHERE p.$item = :$item");
+            $stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            //verificamos el tamaño de la respuesta
+            if($stmt->rowCount() == 1){
+                return $stmt->fetch(PDO::FETCH_ASSOC);  
+            }else{
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
         }else{
+            $stmt = Conexion::conectar()->prepare("SELECT  p.*, CONCAT(u.nombre, ' ', u.apellido) AS solicitante, u.numero_documento FROM prestamos p JOIN usuarios u ON p.usuario_id = u.id_usuario");
+            $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
+
 
         $stmt->close();
         $stmt = null;

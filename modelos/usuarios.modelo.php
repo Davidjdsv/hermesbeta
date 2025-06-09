@@ -66,9 +66,10 @@ class ModeloUsuarios{
         if ($item != null) {
             $stmt = Conexion::conectar()->prepare("SELECT u.*, 
                                                             r.id_rol, r.nombre_rol, 
-                                                            f.id_ficha, f.descripcion AS descripcion_ficha, f.codigo, 
+                                                            f.id_ficha, f.descripcion AS descripcion_ficha, f.codigo, f.estado AS estado_ficha,
                                                             s.id_sede, s.nombre_sede,
                                                             u.id_usuario
+                                                            -- f.estado se llamo para mostrar el estado de la ficha en solicitudes
                                                             -- u.nombre,
                                                             -- u.apellido
                                                     FROM $tabla as u      

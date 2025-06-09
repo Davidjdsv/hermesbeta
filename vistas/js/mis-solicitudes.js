@@ -48,7 +48,7 @@ $(document).on("click", ".btnVerDetalle", function () {
               ],
               responsive: true,
               autoWidth: false,      
-              scrollX: true,        
+              ordering: true,        
               language: {
                 sProcessing: "Procesando...",
                 sLengthMenu: "Mostrar _MENU_ registros",
