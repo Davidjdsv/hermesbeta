@@ -254,6 +254,16 @@ $(document).on("click", ".btnTraspasarUbicacion", function() {
 });
 
 /* ==================================================
+HISTORIAL DE EQUIPOS PARA LA TRAZABILIDAD
+================================================== */
+$(document).on("click", ".btnHistorialEquipo", function() {
+    //capturamos el id del boton para llenar el formulario
+    let idEquipoHistorial = $(this).attr("idEquipoHistorial"); //Id del equipo
+    console.log("Equipo historial:",idEquipoHistorial);
+})
+
+
+/* ==================================================
 BOTÓN PARA AGREGAR AL INPUT DE LA NUEVA UBICACIÓN DEL EQUIPO
 ================================================== */
 

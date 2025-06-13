@@ -395,7 +395,7 @@
   MODAL PARA HISTÓRICO DEL EQUIPO
   ========== End Section ========== -->
   <div class="modal fade" id="modalHistorialEquipo">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header bg-secondary">
           <h4 class="modal-title">Historial del equipo</h4>
