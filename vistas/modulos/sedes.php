@@ -115,38 +115,40 @@
     <div class="modal fade" id="modalAddSede" tabindex="-1" role="dialog" aria-labelledby="modalAddSedeLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAddSedeLabel">Agregar Nueva Sede</h5>
+                <div class="modal-header bg-primary">
+                    <h4 class="modal-title" id="modalAddSedeLabel">Agregar Nueva Sede</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formAddSede" method="POST"> 
-                        <div class="form-group">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" id="nombreSede" name="nombreSede" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="direccion">Dirección</label>
-                            <input type="text" class="form-control" id="direccionSede" name="direccionSede" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcion">Descripción</label>
-                            <textarea class="form-control" id="descripcionSede" name="descripcionSede" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    <div class="box-body">
+                        <form id="formAddSede" method="POST"> 
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombreSede" name="nombreSede" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" class="form-control" id="direccionSede" name="direccionSede" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <textarea class="form-control" id="descripcionSede" name="descripcionSede" required></textarea>
+                            </div>
 
-                        <?php
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
 
-                            // Include the PHP file for handling the form submission
-                            $crearSede = new ControladorSedes();
-                            $crearSede->ctrCrearSede();                            
-
-                        ?>
-
-
-                    </form>
+                            <?php
+                                // Include the PHP file for handling the form submission
+                                $crearSede = new ControladorSedes();
+                                $crearSede->ctrCrearSede();                            
+                            ?>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -157,42 +159,44 @@
     <div class="modal fade" id="modalEditSede" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditSedeLabel">Editar Sede</h5>
+                <div class="modal-header bg-primary">
+                    <h4 class="modal-title" id="modalEditSedeLabel">Editar Sede</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formEditSede" method="POST"> 
-                        <input type="hidden" id="idEditSede" name="idEditSede" >
-                        <div class="form-group">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" id="nombreEditSede" name="nombreEditSede" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="direccion">Dirección</label>
-                            <input type="text" class="form-control" id="direccionEditSede" name="direccionEditSede" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcion">Descripción</label>
-                            <textarea class="form-control" id="descripcionEditSede" name="descripcionEditSede" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Editar</button>
+                    <div class="box-body">
+                        <form id="formEditSede" method="POST"> 
+                            <input type="hidden" id="idEditSede" name="idEditSede">
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombreEditSede" name="nombreEditSede" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="direccion">Dirección</label>
+                                <input type="text" class="form-control" id="direccionEditSede" name="direccionEditSede" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <textarea class="form-control" id="descripcionEditSede" name="descripcionEditSede" required></textarea>
+                            </div>
 
-                        <?php
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button type="submit" class="btn btn-primary">Editar</button>
+                            </div>
 
-                            $crearSede = new ControladorSedes();
-                            $crearSede->ctrEditarSede();                            
-
-                        ?>
-
-
-                    </form>
+                            <?php
+                                $crearSede = new ControladorSedes();
+                                $crearSede->ctrEditarSede();                            
+                            ?>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>
 
      
 

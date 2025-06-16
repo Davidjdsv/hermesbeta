@@ -1,4 +1,4 @@
-  <!-- Content Wrapper. Contains page content -->
+<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -78,16 +78,17 @@
   <!-- /.content-wrapper -->
 
     <!-- Modal for adding a new role -->
-  <div class="modal fade" id="modalAddRol" tabindex="-1" role="dialog" aria-labelledby="modalAddRolLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalAddRolLabel">Agregar Rol</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
+<div class="modal fade" id="modalAddRol" tabindex="-1" role="dialog" aria-labelledby="modalAddRolLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h4 class="modal-title" id="modalAddRolLabel">Agregar Rol</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
                     <form id="formAddRol" method="POST"> 
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
@@ -97,34 +98,35 @@
                             <label for="descripcion">Descripción</label>
                             <textarea class="form-control" id="descripcionRol" name="descripcionRol" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
 
                         <?php
-
                             // Include the PHP file for handling the form submission
                             $crearRol = new ControladorRoles();
                             $crearRol->ctrCrearRol();                            
-
                         ?>
-
-
                     </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal for editing a role -->
-    <div class="modal fade" id="modalEditRol" tabindex="-1" role="dialog" aria-labelledby="modalEditRolLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditRolLabel">Editar Rolllll</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
+<!-- Modal for editing a role -->
+<div class="modal fade" id="modalEditRol" tabindex="-1" role="dialog" aria-labelledby="modalEditRolLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h4 class="modal-title" id="modalEditRolLabel">Editar Rol</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
                     <form id="formEditRol" method="POST"> 
                         <input type="hidden" id="idEditRol" name="idEditRol" value="">
                         <div class="form-group">
@@ -135,21 +137,21 @@
                             <label for="descripcion">Descripción</label>
                             <textarea class="form-control" id="descripcionEditRol" name="descripcionEditRol" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Modificar</button>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Modificar</button>
+                        </div>
 
                         <?php
-
                             // Include the PHP file for handling the form submission
                             $crearRol = new ControladorRoles();
                             $crearRol->ctrEditarRol();                            
-
                         ?>
-
-
                     </form>
                 </div>
             </div>
         </div>
-    </div>     
+    </div>
+</div>
 
        

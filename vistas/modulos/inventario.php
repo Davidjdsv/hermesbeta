@@ -389,3 +389,25 @@
       </div>
     </div>
   </div>
+
+
+  <!-- ========== Start Section ==========
+  MODAL PARA HISTÓRICO DEL EQUIPO
+  ========== End Section ========== -->
+  <div class="modal fade" id="modalHistorialEquipo">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-secondary">
+          <h4 class="modal-title">Historial del equipo</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="">
+            <h1>¿Sale Balatrito?</h1>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

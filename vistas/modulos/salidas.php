@@ -36,18 +36,18 @@
                                     $salidas = Controladorsalidas::ctrMostrarsalidas($item, $valor);
 
 
-                                    foreach ($salidas as $key => $value)   {
+                                    foreach ($salidas as $key => $value) {
                                         echo '
                                         <tr> 
                                         
-                                            <td>'.$value["id_prestamo"].'</td>
-                                            <td>'.$value["nombre"].'</td>
-                                            <td>'.$value["tipo_prestamo"].'</td>
-                                            <td>'.$value["estado_prestamo"].'</td>
+                                            <td>' . $value["id_prestamo"] . '</td>
+                                            <td>' . $value["nombre"] . '</td>
+                                            <td>' . $value["tipo_prestamo"] . '</td>
+                                            <td>' . $value["estado_prestamo"] . '</td>
                                     
                                             <td>
                                                 <div class="btn-group">
-                                                    <button class="btn btn-info btn-sm btnVerDetalles" data-id="'.$value["id_prestamo"].'" data-toggle="modal" data-target="#modalDetallesPrestamo">
+                                                    <button class="btn btn-info btn-sm btnVerDetalles" data-id="' . $value["id_prestamo"] . '" data-toggle="modal" data-target="#modalDetallesPrestamo">
                                                         <i class="fa fa-eye"></i> Ver Detalles
                                                     </button>
                                                 </div>
@@ -66,7 +66,7 @@
 </div>
 
     <!-- Modal de Detalles del Préstamo -->
-    <div class="modal fade" id="modalDetallesPrestamo" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPrestamoLabel" aria-hidden="true">
+<div class="modal fade" id="modalDetallesPrestamo" tabindex="-1" role="dialog" aria-labelledby="modalDetallesPrestamoLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary">
@@ -77,22 +77,32 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-md-12">
-                        <dl class="row">
-
-                            <dt class="col-sm-4">Estado:</dt>
-                            <dd class="col-sm-8" id="detalleTipoPrestamo"></dd>
-
-                            <dt class="col-sm-4">Fecha Préstamo:</dt>
-                            <dd class="col-sm-8" id="detalleFechaInicio"></dd>
-
-                            <dt class="col-sm-4">Fecha Devolución:</dt>
-                            <dd class="col-sm-8" id="detalleFechaFin"></dd>
-
-                            <dt class="col-sm-4">Motivo:</dt>
-                            <dd class="col-sm-8" id="detalleMotivoPrestamo"></dd>
-                        </dl>
+                    <!-- Usuario -->
+                    <div class="col-md-4 text-center">
+                        <img src="vistas/img/usuarios/default/anonymous.png" class="rounded-circle mb-2" alt="Avatar" width="100" height="100">
+                        <h5 class="mb-0" id="detalleUsuarioNombre">Nombre Usuario</h5>
+                        <small class="text-muted" id="detalleUsuarioRol">Rol</small>
                     </div>
+
+                    <!-- Detalles del préstamo -->
+                    <div class="col-md-8">
+                        <div class="card card-outline card-info">
+                            <div class="card-header py-2">
+                                <h6 class="card-title m-0">Información del Préstamo</h6>
+                            </div>
+                            <div class="card-body p-2">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p><strong>Estado:</strong> <span id="detalleTipoPrestamo">----</span></p>
+                                        <p><strong>Fecha Préstamo::</strong> <span id="detalleFechaInicio">----</span></p>
+                                        <p><strong>Fecha Devolución:</strong> <span id="detalleFechaFin">----</span></p>
+                                        <p><strong>Motivo:</strong> <span id="detalleMotivoPrestamo">----</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
@@ -102,7 +112,7 @@
                                 <table class="table table-bordered table-striped " id="tblDetallePrestamo">
                                     <thead>
                                         <tr>
-                                
+
 
                                             <th>ID</th>
                                             <th>Categoría</th>
@@ -110,12 +120,12 @@
                                             <th>etiqueta</th>
                                             <th>Serial</th>
                                             <th>Ubicación</th>
-                                            
+
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
-                                        
+
+
                                     </tbody>
                                 </table>
                             </div>
@@ -124,10 +134,23 @@
                 </div>
             </div>
             <div class="modal-footer">
-               
-<button type="button" class="btn btn-success d-none" id="btnAceptarPrestamo">Aceptar</button>
+                <form method="POST">
+                    <!-- creamos dos inputo oculos para enviar los datos al controlador -->
+                    <input type="hidden" id="idUsuarioAutorizaSalida" name="idUsuarioAutorizaSalida" value="<?php echo $_SESSION['id_usuario'] ?>">
+                    <input type="hidden" id="idPrestamoSalida" name="idPrestamoSalida" value="">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-success" id="btnAceptarPrestamo">Aceptar</button>
+
+                    <?php
+                    $aceptarSalida = new Controladorsalidas();
+                    $aceptarSalida->ctrAceptarSalida();
+                    
+                    ?>
+
+
+                </form>
             </div>
         </div>
     </div>
 </div>
-
