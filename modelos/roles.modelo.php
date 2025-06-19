@@ -81,4 +81,25 @@ class ModeloRoles{
         $stmt->close();
         $stmt = null;
     }
+
+    static public function mdlEliminarRol($tabla, $idRol)
+    {
+        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_rol = :id_rol");
+        $stmt->bindParam(":id_rol", $idRol, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+        $stmt->close();
+        $stmt = null;
+    }
+
+    static public function mdlDesactivarUsuariosPorRol($idRol)
+    {
+        $stmt = Conexion::conectar()->prepare("UPDATE usuarios SET estado = 'inactivo' WHERE id_rol = :id_rol");
+        $stmt->bindParam(":id_rol", $idRol, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt = null;
+    }
 }

@@ -136,4 +136,27 @@ class ControladorRoles{
             }
         }
     }
+
+    /*=============================================
+    ELIMINAR ROL
+    ==============================================*/
+    static public function ctrEliminarRol()
+    {
+        if (isset($_POST["idRolEliminar"])) {
+            $idRol = $_POST["idRolEliminar"];
+            if ($idRol >= 10) {
+                // Cambiar estado del rol a 'inactivo' en vez de eliminar
+                $respuesta = ModeloRoles::mdlCambiarEstadoRol($idRol, 'inactivo');
+                if ($respuesta == "ok") {
+                    // Desactivar usuarios con ese rol
+                    ModeloRoles::mdlDesactivarUsuariosPorRol($idRol);
+                    echo 'ok';
+                } else {
+                    echo 'error';
+                }
+            } else {
+                echo 'error';
+            }
+        }
+    }
 }

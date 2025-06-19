@@ -61,3 +61,8 @@
         $mostrar->idRol = $_POST["idRolDescripcion"];
         $mostrar->ajaxMostrarRol();
     }
+
+    if (isset($_POST["idRolEliminar"])) {
+        ControladorRoles::ctrEliminarRol();
+        exit();
+    }
