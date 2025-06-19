@@ -194,12 +194,30 @@ class ModeloUsuarios
 
             $stmt->execute();
 
-            // Actualizar rol si cambió
+            // Actualizar o insertar rol si cambió
             if ($datos["idRolOriginal"] != $datos["id_rol"]) {
-                $stmt2 = $conexion->prepare("UPDATE usuario_rol SET id_rol = :id_rol WHERE id_usuario = :id_usuario");
-                $stmt2->bindParam(":id_rol", $datos["id_rol"], PDO::PARAM_INT);
-                $stmt2->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
-                $stmt2->execute();
+                // Verificar si ya existe un registro en usuario_rol
+                $stmtCheck = $conexion->prepare("SELECT COUNT(*) FROM usuario_rol WHERE id_usuario = :id_usuario");
+                $stmtCheck->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
+                $stmtCheck->execute();
+                $existe = $stmtCheck->fetchColumn();
+                if ($existe) {
+                    // Si existe, actualizar
+                    $stmt2 = $conexion->prepare("UPDATE usuario_rol SET id_rol = :id_rol WHERE id_usuario = :id_usuario");
+                    $stmt2->bindParam(":id_rol", $datos["id_rol"], PDO::PARAM_INT);
+                    $stmt2->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
+                    $stmt2->execute();
+                } else {
+                    // Si no existe, insertar
+                    $stmt2 = $conexion->prepare("INSERT INTO usuario_rol(id_usuario, id_rol) VALUES (:id_usuario, :id_rol)");
+                    $stmt2->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
+                    $stmt2->bindParam(":id_rol", $datos["id_rol"], PDO::PARAM_INT);
+                    $stmt2->execute();
+                }
+                // Cambiar estado a activo si se asigna o edita un rol
+                $stmtEstado = $conexion->prepare("UPDATE $tabla SET estado = 'activo' WHERE id_usuario = :id_usuario");
+                $stmtEstado->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
+                $stmtEstado->execute();
             }
 
             // Si cambia de aprendiz a otro rol, eliminar ficha
